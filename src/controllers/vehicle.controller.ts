@@ -5,6 +5,7 @@ import {
   searchVehicles,
   updateVehicle,
   deleteVehicle,
+  purchaseVehicle,
 } from "../services/vehicle.service";
 
 export const createVehicleHandler = async (
@@ -118,6 +119,44 @@ export const deleteVehicleHandler = async (
     res.status(500).json({
       success: false,
       message: "Failed to delete vehicle",
+    });
+  }
+};
+
+export const purchaseVehicleHandler = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const vehicle = await purchaseVehicle(
+      req.params.id as string,
+      req.body.quantity
+    );
+
+    if (!vehicle) {
+      res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      vehicle,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message === "Insufficient stock") {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
+      return;
+    }
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to purchase vehicle",
     });
   }
 };

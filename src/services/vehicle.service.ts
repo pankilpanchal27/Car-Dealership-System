@@ -36,3 +36,23 @@ export const updateVehicle = async (
 export const deleteVehicle = async (id: string) => {
   return await Vehicle.findByIdAndDelete(id);
 };
+
+export const purchaseVehicle = async (
+  id: string,
+  quantity: number
+) => {
+  const vehicle = await Vehicle.findById(id);
+
+  if (!vehicle) {
+    return null;
+  }
+
+  if (vehicle.quantity < quantity) {
+    throw new Error("Insufficient stock");
+  }
+
+  vehicle.quantity -= quantity;
+  await vehicle.save();
+
+  return vehicle;
+};

@@ -39,3 +39,22 @@ it("should not register a user with an existing email", async () => {
 
   expect(response.body.message).toBe("Email already exists");
 });
+it("should not register a user with an existing email", async () => {
+  const user = {
+    name: "Pankil",
+    email: "pankil@example.com",
+    password: "password123",
+  };
+
+  await request(app)
+    .post("/api/auth/register")
+    .send(user);
+
+  const response = await request(app)
+    .post("/api/auth/register")
+    .send(user);
+
+  expect(response.status).toBe(409);
+  expect(response.body.success).toBe(false);
+  expect(response.body.message).toBe("Email already exists");
+});

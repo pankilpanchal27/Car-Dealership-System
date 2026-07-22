@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config({ quiet: true });
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 

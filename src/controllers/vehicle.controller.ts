@@ -3,6 +3,7 @@ import {
   createVehicle,
   getAllVehicles,
   searchVehicles,
+  updateVehicle,
 } from "../services/vehicle.service";
 
 export const createVehicleHandler = async (
@@ -62,6 +63,33 @@ export const searchVehiclesHandler = async (
     res.status(500).json({
       success: false,
       message: "Failed to search vehicles",
+    });
+  }
+};
+
+export const updateVehicleHandler = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const vehicle = await updateVehicle(req.params.id as string, req.body);
+
+    if (!vehicle) {
+      res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      vehicle,
+    });
+  } catch {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update vehicle",
     });
   }
 };

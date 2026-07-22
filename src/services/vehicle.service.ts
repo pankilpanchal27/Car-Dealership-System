@@ -22,3 +22,13 @@ export const searchVehicles = async (query: {
   
     return await Vehicle.find(filter);
 };
+
+export const updateVehicle = async (
+  id: string,
+  updateData: Partial<IVehicle>
+) => {
+  return await Vehicle.findByIdAndUpdate(id, updateData, {
+    new: true,
+    runValidators: true,
+  });
+};

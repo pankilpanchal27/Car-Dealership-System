@@ -32,3 +32,7 @@ export const updateVehicle = async (
     runValidators: true,
   });
 };
+
+export const deleteVehicle = async (id: string) => {
+  return await Vehicle.findByIdAndDelete(id);
+};

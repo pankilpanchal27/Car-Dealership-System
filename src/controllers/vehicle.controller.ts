@@ -4,6 +4,7 @@ import {
   getAllVehicles,
   searchVehicles,
   updateVehicle,
+  deleteVehicle,
 } from "../services/vehicle.service";
 
 export const createVehicleHandler = async (
@@ -90,6 +91,33 @@ export const updateVehicleHandler = async (
     res.status(500).json({
       success: false,
       message: "Failed to update vehicle",
+    });
+  }
+};
+
+export const deleteVehicleHandler = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const vehicle = await deleteVehicle(req.params.id as string);
+
+    if (!vehicle) {
+      res.status(404).json({
+        success: false,
+        message: "Vehicle not found",
+      });
+      return;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Vehicle deleted successfully",
+    });
+  } catch {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete vehicle",
     });
   }
 };

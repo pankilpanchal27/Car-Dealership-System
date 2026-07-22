@@ -56,3 +56,19 @@ export const purchaseVehicle = async (
 
   return vehicle;
 };
+
+export const restockVehicle = async (
+  id: string,
+  quantity: number
+) => {
+  const vehicle = await Vehicle.findById(id);
+
+  if (!vehicle) {
+    return null;
+  }
+
+  vehicle.quantity += quantity;
+  await vehicle.save();
+
+  return vehicle;
+};

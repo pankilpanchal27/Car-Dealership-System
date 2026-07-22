@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
+import { authenticate } from "./middleware/auth.middleware";
 
 const app = express();
 
@@ -25,5 +26,10 @@ app.get("/health", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
-
+app.get("/api/protected", authenticate, (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Access granted",
+  });
+});
 export default app;

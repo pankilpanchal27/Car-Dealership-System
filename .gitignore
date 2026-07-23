@@ -1,4 +1,22 @@
-node_modules
+# macOS
+.DS_Store
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment files
 .env
-dist
-coverage.DS_Store
+**/.env
+
+# Build output
+dist/
+coverage/
+
+# Editors
+.vscode/
+.idea/

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "../context/AuthContext";
+import { AuthProvider } from "../context/AuthProvider";
 import ProtectedRoute from "./ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
 

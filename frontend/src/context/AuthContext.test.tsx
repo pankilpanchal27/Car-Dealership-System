@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { AuthProvider } from "./AuthProvider";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "./useAuth";
 
 function TestComponent() {
   const { isAuthenticated } = useAuth();

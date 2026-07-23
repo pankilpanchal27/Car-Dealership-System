@@ -8,18 +8,23 @@ export default function VehicleCard({
   vehicle,
 }: VehicleCardProps) {
   return (
-    <article>
-      <h2>
-        {vehicle.make} {vehicle.model}
-      </h2>
+    <article className="rounded-lg border bg-white p-5 shadow">
+  <h2 className="text-xl font-bold">
+    {vehicle.make} {vehicle.model}
+  </h2>
 
-      <p>Year: {vehicle.year}</p>
-      <p>Price: ₹{vehicle.price.toLocaleString()}</p>
-      <p>Mileage: {vehicle.mileage.toLocaleString()} km</p>
-      <p>Fuel: {vehicle.fuelType}</p>
-      <p>Transmission: {vehicle.transmission}</p>
-      <p>Color: {vehicle.color}</p>
-      <p>Status: {vehicle.status}</p>
-    </article>
+  <p className="mt-2">
+    <strong>Category:</strong> {vehicle.category}
+  </p>
+
+  <p>
+    <strong>Price:</strong> ₹
+    {vehicle.price.toLocaleString()}
+  </p>
+
+  <p>
+    <strong>Stock:</strong> {vehicle.quantity}
+  </p>
+</article>
   );
 }

@@ -136,7 +136,7 @@ export default function Dashboard() {
   // ─── Admin View ────────────────────────────────────────────────────────────
   if (isAdminView) {
     return (
-      <div className="min-h-screen bg-navy text-white font-sans flex flex-col">
+      <div className="min-h-screen bg-gray-bg text-navy font-sans flex flex-col">
         <Navbar 
           isAdmin={true}
           isActuallyAdmin={isActuallyAdmin}
@@ -147,39 +147,39 @@ export default function Dashboard() {
         
         <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 py-8 flex flex-col">
           {error && (
-            <p className="mb-4 rounded bg-red-900/30 px-4 py-3 text-sm font-medium text-red-400 border border-red-900/50">
+            <p className="mb-4 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
               {error}
             </p>
           )}
 
           {/* Stats Row */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">▣</span>
+                <span className="w-3 h-3 bg-gray-100 rounded flex items-center justify-center text-gray-600 text-[8px]">▣</span>
                 Total Models
               </p>
-              <p className="text-3xl font-heading tracking-wide text-white">{stats.totalModels}</p>
+              <p className="text-3xl font-heading tracking-wide text-navy">{stats.totalModels}</p>
             </div>
-            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">⚡</span>
+                <span className="w-3 h-3 bg-gray-100 rounded flex items-center justify-center text-gray-600 text-[8px]">⚡</span>
                 Total Units
               </p>
-              <p className="text-3xl font-heading tracking-wide text-white">{stats.totalUnits}</p>
+              <p className="text-3xl font-heading tracking-wide text-navy">{stats.totalUnits}</p>
             </div>
-            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">₹</span>
+                <span className="w-3 h-3 bg-gray-100 rounded flex items-center justify-center text-gray-600 text-[8px]">₹</span>
                 Total Value
               </p>
               <p className="text-3xl font-heading tracking-wide text-gold">
                 ₹{stats.totalValue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </p>
             </div>
-            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-red-500/20 rounded flex items-center justify-center text-red-500 text-[8px]">⊗</span>
+                <span className="w-3 h-3 bg-red-50 rounded flex items-center justify-center text-red-500 text-[8px]">⊗</span>
                 Out of Stock
               </p>
               <p className="text-3xl font-heading tracking-wide text-red-500">{stats.outOfStock}</p>
@@ -188,34 +188,34 @@ export default function Dashboard() {
 
           <div className="flex flex-col lg:flex-row gap-6 items-start">
             {/* Left Sidebar: Add Vehicle Form */}
-            <div className="w-full lg:w-72 shrink-0 bg-navy-dark border border-white/5 rounded-sm p-6 shadow-sm sticky top-28">
+            <div className="w-full lg:w-72 shrink-0 bg-white border border-gray-200 rounded-sm p-6 shadow-sm sticky top-28">
               <h2 className="text-sm font-bold uppercase tracking-widest text-gold mb-6">
                 Add New Vehicle
               </h2>
               <form onSubmit={handleAdd} className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Make</label>
-                  <input type="text" required value={make} onChange={(e) => setMake(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Make</label>
+                  <input type="text" required value={make} onChange={(e) => setMake(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Model</label>
-                  <input type="text" required value={model} onChange={(e) => setModel(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Model</label>
+                  <input type="text" required value={model} onChange={(e) => setModel(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Category</label>
-                  <input type="text" required value={category} onChange={(e) => setCategory(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Category</label>
+                  <input type="text" required value={category} onChange={(e) => setCategory(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Price (₹)</label>
-                    <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Price (₹)</label>
+                    <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Quantity</label>
-                    <input type="number" required min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Quantity</label>
+                    <input type="number" required min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
                   </div>
                 </div>
-                <button type="submit" disabled={adding} className="btn-gold rounded-sm py-2.5 mt-2">
+                <button type="submit" disabled={adding} className="btn-gold rounded-sm py-2.5 mt-2 text-white hover:text-white">
                   {adding ? "ADDING..." : "ADD VEHICLE"}
                 </button>
               </form>
@@ -255,7 +255,7 @@ export default function Dashboard() {
 
   // ─── Customer View ─────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-navy text-white font-sans flex flex-col">
+    <div className="min-h-screen bg-gray-bg text-navy font-sans flex flex-col">
       <Navbar 
         isAdmin={false} 
         isActuallyAdmin={isActuallyAdmin}
@@ -266,7 +266,7 @@ export default function Dashboard() {
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10 flex flex-col">
         {error && (
-          <p className="mb-6 rounded bg-red-900/30 px-4 py-3 text-sm font-medium text-red-400 border border-red-900/50">
+          <p className="mb-6 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
             {error}
           </p>
         )}

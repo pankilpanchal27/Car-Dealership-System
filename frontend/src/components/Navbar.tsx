@@ -14,15 +14,15 @@ export default function Navbar({ isAdmin, isActuallyAdmin, viewAsCustomer, onTog
 
   if (isAdmin) {
     return (
-      <header className="w-full bg-navy border-b border-white/5 shadow-md">
+      <header className="w-full bg-white border-b border-gray-200 shadow-sm">
         <div className="flex h-1 bg-gold w-full" />
         <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-5">
           {/* Left Side Branding */}
           <div>
-            <h1 className="text-3xl font-heading text-white tracking-wider mb-1">
+            <h1 className="text-3xl font-heading text-navy tracking-wider mb-1">
               ADMIN DASHBOARD
             </h1>
-            <p className="text-sm font-medium text-gray-400">
+            <p className="text-sm font-medium text-gray-500">
               Manage inventory, stock, and vehicle details
             </p>
           </div>
@@ -36,14 +36,14 @@ export default function Navbar({ isAdmin, isActuallyAdmin, viewAsCustomer, onTog
               {isActuallyAdmin && (
                 <button
                   onClick={onToggleView}
-                  className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-white/10 rounded"
+                  className="border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy transition hover:bg-gray-100 rounded"
                 >
                   VIEW STORE
                 </button>
               )}
               <button
                 onClick={onLogout}
-                className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-white/10 rounded"
+                className="border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy transition hover:bg-gray-100 rounded"
               >
                 LOGOUT
               </button>
@@ -54,17 +54,17 @@ export default function Navbar({ isAdmin, isActuallyAdmin, viewAsCustomer, onTog
     );
   }
 
-  // Customer Navbar (Now uses Dark Theme)
+  // Customer Navbar (Light Theme)
   return (
-    <header className="w-full bg-navy border-b border-white/5 shadow-md">
+    <header className="w-full bg-white border-b border-gray-200 shadow-sm">
       <div className="flex h-1 bg-gold w-full" />
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
         {/* Left Side Branding */}
         <div>
-          <h1 className="text-3xl font-heading text-white tracking-wider mb-1">
+          <h1 className="text-3xl font-heading text-navy tracking-wider mb-1">
             VEHICLE INVENTORY
           </h1>
-          <p className="text-sm font-medium text-gray-400">
+          <p className="text-sm font-medium text-gray-500">
             Browse and purchase vehicles
           </p>
         </div>
@@ -78,14 +78,14 @@ export default function Navbar({ isAdmin, isActuallyAdmin, viewAsCustomer, onTog
             {isActuallyAdmin && (
               <button
                 onClick={onToggleView}
-                className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gold transition hover:bg-white/10 rounded"
+                className="border border-gold bg-gold/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gold transition hover:bg-gold/20 rounded"
               >
                 ADMIN PANEL
               </button>
             )}
             <button
               onClick={onLogout}
-              className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-white/10 rounded"
+              className="border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy transition hover:bg-gray-100 rounded"
             >
               LOGOUT
             </button>

@@ -39,11 +39,11 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   return (
-    <div className="mb-8 w-full border-t-[4px] border-gold bg-navy p-4 shadow-lg">
+    <div className="mb-8 w-full border-t-[4px] border-gold bg-white p-4 shadow-sm rounded-sm">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-7 items-end">
         {/* Make */}
         <div className="flex flex-col gap-1.5 lg:col-span-1">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
             Make
           </label>
           <input
@@ -52,12 +52,12 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             value={make}
             onChange={(e) => setMake(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+            className="w-full input-minimal px-3 py-2 text-sm rounded-sm"
           />
         </div>
         {/* Model */}
         <div className="flex flex-col gap-1.5 lg:col-span-1">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
             Model
           </label>
           <input
@@ -66,12 +66,12 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             value={model}
             onChange={(e) => setModel(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+            className="w-full input-minimal px-3 py-2 text-sm rounded-sm"
           />
         </div>
         {/* Category */}
         <div className="flex flex-col gap-1.5 lg:col-span-1">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
             Category
           </label>
           <input
@@ -80,12 +80,12 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+            className="w-full input-minimal px-3 py-2 text-sm rounded-sm"
           />
         </div>
         {/* Min Price */}
         <div className="flex flex-col gap-1.5 lg:col-span-1">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
             Min Price
           </label>
           <input
@@ -94,12 +94,12 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+            className="w-full input-minimal px-3 py-2 text-sm rounded-sm"
           />
         </div>
         {/* Max Price */}
         <div className="flex flex-col gap-1.5 lg:col-span-1">
-          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
             Max Price
           </label>
           <input
@@ -108,7 +108,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+            className="w-full input-minimal px-3 py-2 text-sm rounded-sm"
           />
         </div>
         {/* Actions */}
@@ -123,7 +123,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
           <button
             type="button"
             onClick={handleClear}
-            className="flex-1 bg-navy-dark hover:bg-black text-white font-bold uppercase tracking-widest text-xs px-4 py-2.5 transition rounded-sm"
+            className="flex-1 border border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold uppercase tracking-widest text-xs px-4 py-2.5 transition rounded-sm"
           >
             Clear
           </button>

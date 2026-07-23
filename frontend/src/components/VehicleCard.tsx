@@ -22,21 +22,21 @@ export default function VehicleCard({
   if (isAdmin) {
     // Admin Variant
     return (
-      <article className="relative flex flex-col overflow-hidden bg-navy-dark border border-white/5 rounded-sm p-6 text-white transition hover:border-white/10">
+      <article className="relative flex flex-col overflow-hidden bg-white shadow-sm border border-gray-100 rounded-sm p-6 text-navy transition hover:shadow-md">
         <div className="flex justify-between items-start mb-2">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 border border-white/10 px-2 py-0.5 rounded-sm bg-white/5">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-200 px-2 py-0.5 rounded-sm bg-gray-50">
             {vehicle.category}
           </span>
-          <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'}`}>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-600 bg-emerald-50' : 'text-red-600 bg-red-50'}`}>
             {vehicle.quantity} in stock
           </span>
         </div>
 
-        <h2 className="text-xl font-bold mt-1 mb-1">
+        <h2 className="text-xl font-heading mt-1 mb-1">
           {vehicle.make} {vehicle.model}
         </h2>
         
-        <p className="text-gold font-mono text-sm mb-6">
+        <p className="text-gold font-mono text-sm mb-6 font-bold">
           ₹{vehicle.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </p>
 
@@ -45,12 +45,12 @@ export default function VehicleCard({
             <input 
               type="number" 
               placeholder="Amount" 
-              className="flex-1 bg-navy border border-white/10 px-3 py-2 text-xs outline-none focus:border-gold rounded-sm"
+              className="flex-1 input-minimal px-3 py-2 text-xs rounded-sm"
               value={restockAmount}
               onChange={(e) => setRestockAmount(e.target.value)}
             />
             <button 
-              className="flex-shrink-0 bg-navy border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-gray-300 hover:text-white hover:border-white/20 transition rounded-sm"
+              className="flex-shrink-0 border border-gray-200 bg-gray-50 px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-navy hover:bg-gray-100 transition rounded-sm"
               onClick={() => {
                 if(restockAmount) {
                   onEdit({ ...vehicle, quantity: vehicle.quantity + Number(restockAmount) });
@@ -64,13 +64,13 @@ export default function VehicleCard({
           <div className="flex gap-2">
             <button
               onClick={() => onEdit(vehicle)}
-              className="flex-1 bg-navy border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 hover:text-white hover:border-white/20 transition rounded-sm"
+              className="flex-1 border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-bold uppercase tracking-widest text-navy hover:bg-gray-100 transition rounded-sm"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete(vehicle._id)}
-              className="flex-1 bg-red-900/20 border border-red-900/30 px-4 py-2 text-xs font-bold uppercase tracking-widest text-red-500 hover:bg-red-900/40 transition rounded-sm"
+              className="flex-1 btn-outline-red px-4 py-2 text-xs font-bold uppercase tracking-widest transition rounded-sm"
             >
               Delete
             </button>
@@ -82,7 +82,7 @@ export default function VehicleCard({
 
   // Customer Variant
   return (
-    <article className="relative flex flex-col overflow-hidden bg-navy-dark border border-white/5 p-6 rounded-sm text-white transition hover:border-white/10">
+    <article className="relative flex flex-col overflow-hidden bg-white shadow-sm border border-gray-100 p-6 rounded-sm text-navy transition hover:shadow-md">
       {!inStock && (
         <div className="ribbon-wrapper">
           <div className="ribbon">Sold Out</div>
@@ -90,19 +90,19 @@ export default function VehicleCard({
       )}
 
       <div className="flex justify-between items-start mb-2">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 border border-white/10 px-2 py-0.5 rounded-sm bg-white/5">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-200 px-2 py-0.5 rounded-sm bg-gray-50">
           {vehicle.category}
         </span>
-        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'}`}>
+        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-600 bg-emerald-50' : 'text-red-600 bg-red-50'}`}>
           {vehicle.quantity} in stock
         </span>
       </div>
 
-      <h2 className="text-xl font-bold mt-1 mb-1">
+      <h2 className="text-xl font-heading mt-1 mb-1">
         {vehicle.make} {vehicle.model}
       </h2>
       
-      <p className="text-gold font-mono text-sm mb-6">
+      <p className="text-gold font-mono text-sm mb-6 font-bold">
         ₹{vehicle.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
       </p>
 
@@ -113,7 +113,7 @@ export default function VehicleCard({
           className={`w-full py-3 text-xs font-bold uppercase tracking-widest transition rounded-sm ${
             inStock
               ? "bg-gold text-white hover:bg-gold-hover"
-              : "bg-white/5 text-gray-500 cursor-not-allowed border border-white/10"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200"
           }`}
         >
           Purchase

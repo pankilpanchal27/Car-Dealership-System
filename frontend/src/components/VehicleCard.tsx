@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Vehicle } from "../services/vehicleService";
 
 interface VehicleCardProps {
@@ -8,10 +9,6 @@ interface VehicleCardProps {
   onDelete: (id: string) => void;
 }
 
-/**
- * VehicleCard — displays vehicle details with purchase button (disabled at 0 stock)
- * and admin-only edit/delete controls.
- */
 export default function VehicleCard({
   vehicle,
   isAdmin,
@@ -20,62 +17,109 @@ export default function VehicleCard({
   onDelete,
 }: VehicleCardProps) {
   const inStock = vehicle.quantity > 0;
+  const [restockAmount, setRestockAmount] = useState("");
 
-  return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl glass p-6 transition-all hover:glass-strong hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(99,102,241,0.15)]">
-      {/* Stock badge */}
-      <span
-        className={`absolute right-4 top-4 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${
-          inStock
-            ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/30"
-            : "bg-red-500/10 text-red-400 ring-1 ring-red-500/30"
-        }`}
-      >
-        {inStock ? `${vehicle.quantity} in stock` : "Out of Stock"}
-      </span>
+  if (isAdmin) {
+    // Admin Variant
+    return (
+      <article className="relative flex flex-col overflow-hidden bg-navy-dark border border-white/5 rounded-sm p-6 text-white transition hover:border-white/10">
+        <div className="flex justify-between items-start mb-2">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 border border-white/10 px-2 py-0.5 rounded-sm bg-white/5">
+            {vehicle.category}
+          </span>
+          <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'}`}>
+            {vehicle.quantity} in stock
+          </span>
+        </div>
 
-      {/* Vehicle info */}
-      <div className="mt-2 flex-grow">
-        <h2 className="text-xl font-bold text-white group-hover:shimmer-text transition-all duration-300">
+        <h2 className="text-xl font-bold mt-1 mb-1">
           {vehicle.make} {vehicle.model}
         </h2>
         
-        <p className="mt-1.5 text-xs font-bold uppercase tracking-[0.2em] text-indigo-400/80">
-          {vehicle.category}
+        <p className="text-gold font-mono text-sm mb-6">
+          ${vehicle.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
         </p>
 
-        <p className="mt-6 text-3xl font-extrabold text-white">
-          <span className="text-sm font-medium text-gray-500 align-top mr-1">₹</span>
-          {vehicle.price.toLocaleString("en-IN")}
-        </p>
-      </div>
-
-      {/* Actions */}
-      <div className="mt-8 flex flex-col gap-3">
-        <button
-          onClick={() => onPurchase(vehicle._id)}
-          disabled={!inStock}
-          className={`w-full ${inStock ? 'btn-primary' : 'rounded-xl bg-gray-800/50 py-2.5 text-sm font-semibold text-gray-500 cursor-not-allowed border border-white/5'}`}
-        >
-          {inStock ? "Purchase" : "Out of Stock"}
-        </button>
-
-        {isAdmin && (
+        <div className="mt-auto flex flex-col gap-3">
+          <div className="flex gap-2">
+            <input 
+              type="number" 
+              placeholder="Amount" 
+              className="flex-1 bg-navy border border-white/10 px-3 py-2 text-xs outline-none focus:border-gold rounded-sm"
+              value={restockAmount}
+              onChange={(e) => setRestockAmount(e.target.value)}
+            />
+            <button 
+              className="bg-navy border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 hover:text-white hover:border-white/20 transition rounded-sm"
+              onClick={() => {
+                if(restockAmount) {
+                  onEdit({ ...vehicle, quantity: vehicle.quantity + Number(restockAmount) });
+                  setRestockAmount("");
+                }
+              }}
+            >
+              Restock
+            </button>
+          </div>
           <div className="flex gap-2">
             <button
               onClick={() => onEdit(vehicle)}
-              className="flex-1 rounded-xl bg-amber-500/20 py-2 text-sm font-medium text-amber-400 ring-1 ring-amber-500/30 transition hover:bg-amber-500/30"
+              className="flex-1 bg-navy border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 hover:text-white hover:border-white/20 transition rounded-sm"
             >
               Edit
             </button>
             <button
               onClick={() => onDelete(vehicle._id)}
-              className="flex-1 rounded-xl bg-red-500/20 py-2 text-sm font-medium text-red-400 ring-1 ring-red-500/30 transition hover:bg-red-500/30"
+              className="flex-1 bg-red-900/20 border border-red-900/30 px-4 py-2 text-xs font-bold uppercase tracking-widest text-red-500 hover:bg-red-900/40 transition rounded-sm"
             >
               Delete
             </button>
           </div>
-        )}
+        </div>
+      </article>
+    );
+  }
+
+  // Customer Variant
+  return (
+    <article className="relative flex flex-col overflow-hidden bg-white shadow-sm border border-gray-100 p-6 rounded-sm transition hover:shadow-md">
+      {!inStock && (
+        <div className="ribbon-wrapper">
+          <div className="ribbon">Sold Out</div>
+        </div>
+      )}
+
+      <div className="flex justify-between items-start mb-4">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-200 px-2 py-0.5 rounded-sm bg-gray-50">
+          {vehicle.category}
+        </span>
+        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-500 bg-emerald-50' : 'text-red-500 bg-red-50'}`}>
+          {vehicle.quantity} in stock
+        </span>
+      </div>
+
+      <h2 className="text-xl font-heading text-navy mt-1 mb-4">
+        {vehicle.make} {vehicle.model}
+      </h2>
+      
+      <div className="border-l-[4px] border-gold pl-3 mb-6">
+        <p className="font-mono text-lg font-bold text-navy">
+          ${vehicle.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+        </p>
+      </div>
+
+      <div className="mt-auto">
+        <button
+          onClick={() => onPurchase(vehicle._id)}
+          disabled={!inStock}
+          className={`w-full py-3 text-xs font-bold uppercase tracking-widest transition rounded-sm ${
+            inStock
+              ? "bg-navy text-white hover:bg-navy-dark"
+              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+          }`}
+        >
+          Purchase
+        </button>
       </div>
     </article>
   );

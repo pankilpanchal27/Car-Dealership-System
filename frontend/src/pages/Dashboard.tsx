@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import SearchBar from "../components/SearchBar";
 import VehicleList from "../components/VehicleList";
 import Navbar from "../components/Navbar";
-import AddVehicleModal from "../components/AddVehicleModal";
 import EditVehicleModal from "../components/EditVehicleModal";
 import { useAuth } from "../context/useAuth";
 import {
@@ -15,7 +14,7 @@ import {
   type Vehicle,
 } from "../services/vehicleService";
 
-function Dashboard() {
+export default function Dashboard() {
   const { user, logout } = useAuth();
   const isAdmin = user?.role === "admin";
 
@@ -23,12 +22,18 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Admin modal state
-  const [showAddModal, setShowAddModal] = useState(false);
+  // Admin Add Form State
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [adding, setAdding] = useState(false);
+
+  // Admin Edit Modal
   const [editTarget, setEditTarget] = useState<Vehicle | null>(null);
 
   // ─── Data fetching ─────────────────────────────────────────────────────────
-
   async function loadVehicles() {
     try {
       setLoading(true);
@@ -46,14 +51,25 @@ function Dashboard() {
     loadVehicles();
   }, []);
 
-  // ─── Search ────────────────────────────────────────────────────────────────
+  // ─── Stats Calculation ─────────────────────────────────────────────────────
+  const stats = useMemo(() => {
+    const totalModels = new Set(vehicles.map((v) => v.model)).size;
+    const totalUnits = vehicles.reduce((acc, v) => acc + v.quantity, 0);
+    const totalValue = vehicles.reduce((acc, v) => acc + (v.price * v.quantity), 0);
+    const outOfStock = vehicles.filter((v) => v.quantity === 0).length;
 
+    return { totalModels, totalUnits, totalValue, outOfStock };
+  }, [vehicles]);
+
+  // ─── Actions ───────────────────────────────────────────────────────────────
   async function handleSearch(filters: {
     make?: string;
     model?: string;
     category?: string;
+    minPrice?: string;
+    maxPrice?: string;
   }) {
-    const hasFilters = filters.make || filters.model || filters.category;
+    const hasFilters = filters.make || filters.model || filters.category || filters.minPrice || filters.maxPrice;
     if (!hasFilters) {
       await loadVehicles();
       return;
@@ -70,8 +86,6 @@ function Dashboard() {
     }
   }
 
-  // ─── Purchase ──────────────────────────────────────────────────────────────
-
   async function handlePurchase(id: string) {
     try {
       await purchaseVehicle(id, 1);
@@ -82,16 +96,25 @@ function Dashboard() {
     }
   }
 
-  // ─── Admin: Add ───────────────────────────────────────────────────────────
-
-  async function handleAdd(
-    data: Omit<Vehicle, "_id" | "createdAt" | "updatedAt">
-  ) {
-    await createVehicle(data);
-    await loadVehicles();
+  async function handleAdd(e: React.FormEvent) {
+    e.preventDefault();
+    setAdding(true);
+    try {
+      await createVehicle({
+        make,
+        model,
+        category,
+        price: Number(price),
+        quantity: Number(quantity),
+      });
+      setMake(""); setModel(""); setCategory(""); setPrice(""); setQuantity("");
+      await loadVehicles();
+    } catch {
+      setError("Failed to add vehicle. Please try again.");
+    } finally {
+      setAdding(false);
+    }
   }
-
-  // ─── Admin: Edit ──────────────────────────────────────────────────────────
 
   async function handleSaveEdit(data: Partial<Vehicle>) {
     if (!editTarget) return;
@@ -100,72 +123,144 @@ function Dashboard() {
     await loadVehicles();
   }
 
-  // ─── Admin: Delete ────────────────────────────────────────────────────────
-
   async function handleDelete(id: string) {
     if (!window.confirm("Delete this vehicle? This cannot be undone.")) return;
     await deleteVehicle(id);
     await loadVehicles();
   }
 
-  // ─── Render ───────────────────────────────────────────────────────────────
-
-  return (
-    <div className="min-h-screen bg-[#04060d] text-white">
-      <Navbar isAdmin={isAdmin} onLogout={logout} />
-
-      <main className="mx-auto max-w-7xl px-6 py-10 animate-fade-up">
-        {/* Header */}
-        <div className="mb-8 flex items-end justify-between">
-          <div className="relative z-10">
-            <h1 className="text-4xl font-extrabold tracking-tight text-white shimmer-text">
-              Vehicle Inventory
-            </h1>
-            <p className="mt-2 text-gray-400 font-medium">
-              Browse and purchase from our latest premium collection.
+  // ─── Admin View ────────────────────────────────────────────────────────────
+  if (isAdmin) {
+    return (
+      <div className="min-h-screen bg-navy text-white font-sans flex flex-col">
+        <Navbar isAdmin={isAdmin} onLogout={logout} />
+        
+        <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 py-8 flex flex-col">
+          {error && (
+            <p className="mb-4 rounded bg-red-900/30 px-4 py-3 text-sm font-medium text-red-400 border border-red-900/50">
+              {error}
             </p>
+          )}
+
+          {/* Stats Row */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
+                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">▣</span>
+                Total Models
+              </p>
+              <p className="text-3xl font-heading tracking-wide text-white">{stats.totalModels}</p>
+            </div>
+            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
+                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">⚡</span>
+                Total Units
+              </p>
+              <p className="text-3xl font-heading tracking-wide text-white">{stats.totalUnits}</p>
+            </div>
+            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
+                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">$</span>
+                Total Value
+              </p>
+              <p className="text-3xl font-heading tracking-wide text-gold">
+                ${stats.totalValue.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+              </p>
+            </div>
+            <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
+                <span className="w-3 h-3 bg-red-500/20 rounded flex items-center justify-center text-red-500 text-[8px]">⊗</span>
+                Out of Stock
+              </p>
+              <p className="text-3xl font-heading tracking-wide text-red-500">{stats.outOfStock}</p>
+            </div>
           </div>
 
-          {isAdmin && (
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="btn-primary w-auto shadow-[0_0_15px_rgba(99,102,241,0.3)]"
-            >
-              + Add Vehicle
-            </button>
-          )}
-        </div>
+          <div className="flex flex-col lg:flex-row gap-6 items-start">
+            {/* Left Sidebar: Add Vehicle Form */}
+            <div className="w-full lg:w-72 shrink-0 bg-navy-dark border border-white/5 rounded-sm p-6 shadow-sm sticky top-28">
+              <h2 className="text-sm font-bold uppercase tracking-widest text-gold mb-6">
+                Add New Vehicle
+              </h2>
+              <form onSubmit={handleAdd} className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Make</label>
+                  <input type="text" required value={make} onChange={(e) => setMake(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Model</label>
+                  <input type="text" required value={model} onChange={(e) => setModel(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Category</label>
+                  <input type="text" required value={category} onChange={(e) => setCategory(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Price</label>
+                    <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Quantity</label>
+                    <input type="number" required min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
+                  </div>
+                </div>
+                <button type="submit" disabled={adding} className="btn-gold rounded-sm py-2.5 mt-2">
+                  {adding ? "ADDING..." : "ADD VEHICLE"}
+                </button>
+              </form>
+            </div>
 
-        {/* Search */}
-        <SearchBar onSearch={handleSearch} />
+            {/* Right side: Vehicle Grid */}
+            <div className="flex-1 w-full">
+              {loading ? (
+                <div className="text-gray-500 font-mono">Loading...</div>
+              ) : vehicles.length === 0 ? (
+                <div className="text-gray-500 font-mono py-10">No vehicles in inventory.</div>
+              ) : (
+                <VehicleList
+                  vehicles={vehicles}
+                  isAdmin={isAdmin}
+                  onPurchase={handlePurchase}
+                  onEdit={(v) => setEditTarget(v)}
+                  onDelete={handleDelete}
+                />
+              )}
+            </div>
+          </div>
+        </main>
 
-        {/* Error */}
+        {/* Edit Modal (Kept simple for admin) */}
+        {editTarget && (
+          <EditVehicleModal
+            isOpen={!!editTarget}
+            vehicle={editTarget}
+            onClose={() => setEditTarget(null)}
+            onSave={handleSaveEdit}
+          />
+        )}
+      </div>
+    );
+  }
+
+  // ─── Customer View ─────────────────────────────────────────────────────────
+  return (
+    <div className="min-h-screen bg-gray-bg text-navy font-sans flex flex-col">
+      <Navbar isAdmin={isAdmin} onLogout={logout} />
+
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10 flex flex-col">
         {error && (
-          <p className="mb-6 rounded-xl bg-red-500/10 px-4 py-3 text-sm font-medium text-red-400 ring-1 ring-red-500/30">
+          <p className="mb-6 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
             {error}
           </p>
         )}
 
-        {/* Vehicle grid */}
+        <SearchBar onSearch={handleSearch} />
+
         {loading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 stagger">
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="h-72 animate-pulse rounded-2xl glass-strong"
-              />
-            ))}
-          </div>
+          <div className="text-gray-500 font-mono">Loading...</div>
         ) : vehicles.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-32 text-center animate-fade-up glass-strong rounded-3xl mt-8">
-            <span className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-500/10 text-4xl shadow-[0_0_30px_rgba(99,102,241,0.15)] ring-1 ring-indigo-500/20">
-              📭
-            </span>
-            <h3 className="text-2xl font-bold text-white mb-2">No vehicles found</h3>
-            <p className="text-gray-400 max-w-md">
-              We couldn't find any vehicles matching your current filters, or the inventory is completely sold out.
-            </p>
-          </div>
+          <div className="text-gray-500 font-mono py-20 text-center">No vehicles found.</div>
         ) : (
           <VehicleList
             vehicles={vehicles}
@@ -176,25 +271,6 @@ function Dashboard() {
           />
         )}
       </main>
-
-      {/* Admin: Add Modal */}
-      <AddVehicleModal
-        isOpen={showAddModal}
-        onClose={() => setShowAddModal(false)}
-        onAdd={handleAdd}
-      />
-
-      {/* Admin: Edit Modal */}
-      {editTarget && (
-        <EditVehicleModal
-          isOpen={!!editTarget}
-          vehicle={editTarget}
-          onClose={() => setEditTarget(null)}
-          onSave={handleSaveEdit}
-        />
-      )}
     </div>
   );
 }
-
-export default Dashboard;

@@ -55,7 +55,7 @@ describe("VehicleCard", () => {
       />
     );
 
-    const btn = screen.getByRole("button", { name: /out of stock/i });
+    const btn = screen.getByRole("button", { name: /purchase/i });
     expect(btn).toBeDisabled();
   });
 

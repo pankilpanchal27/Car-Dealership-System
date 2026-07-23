@@ -12,7 +12,7 @@ interface SearchBarProps {
   onSearch: (filters: SearchFilters) => void;
 }
 
-function SearchBar({ onSearch }: SearchBarProps) {
+export default function SearchBar({ onSearch }: SearchBarProps) {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [category, setCategory] = useState("");
@@ -30,80 +30,105 @@ function SearchBar({ onSearch }: SearchBarProps) {
   };
 
   const handleClear = () => {
-    setMake(""); setModel(""); setCategory(""); setMinPrice(""); setMaxPrice("");
+    setMake("");
+    setModel("");
+    setCategory("");
+    setMinPrice("");
+    setMaxPrice("");
     onSearch({});
   };
 
-  const inputClass =
-    "rounded-xl border border-white/10 bg-gray-900 px-4 py-2.5 text-sm text-white placeholder-gray-600 outline-none transition focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20";
-
   return (
-    <div className="mb-8 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-widest text-gray-400">
-        Filter Vehicles
-      </h2>
-
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <input
-          type="text"
-          placeholder="Make"
-          value={make}
-          onChange={(e) => setMake(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className={inputClass}
-        />
-        <input
-          type="text"
-          placeholder="Model"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className={inputClass}
-        />
-        <input
-          type="text"
-          placeholder="Category"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className={inputClass}
-        />
-        <input
-          type="number"
-          placeholder="Min Price (₹)"
-          value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className={inputClass}
-        />
-        <input
-          type="number"
-          placeholder="Max Price (₹)"
-          value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          className={inputClass}
-        />
-      </div>
-
-      <div className="mt-4 flex gap-3">
-        <button
-          type="button"
-          onClick={handleSearch}
-          className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 active:scale-95"
-        >
-          Search
-        </button>
-        <button
-          type="button"
-          onClick={handleClear}
-          className="rounded-xl bg-white/10 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-white/20 active:scale-95"
-        >
-          Clear
-        </button>
+    <div className="mb-8 w-full border-t-[4px] border-gold bg-navy p-4 shadow-lg">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-5 lg:grid-cols-7 items-end">
+        {/* Make */}
+        <div className="flex flex-col gap-1.5 lg:col-span-1">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            Make
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Toyota"
+            value={make}
+            onChange={(e) => setMake(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+          />
+        </div>
+        {/* Model */}
+        <div className="flex flex-col gap-1.5 lg:col-span-1">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            Model
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Corolla"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+          />
+        </div>
+        {/* Category */}
+        <div className="flex flex-col gap-1.5 lg:col-span-1">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            Category
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. SUV"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+          />
+        </div>
+        {/* Min Price */}
+        <div className="flex flex-col gap-1.5 lg:col-span-1">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            Min Price
+          </label>
+          <input
+            type="number"
+            placeholder="0"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+          />
+        </div>
+        {/* Max Price */}
+        <div className="flex flex-col gap-1.5 lg:col-span-1">
+          <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            Max Price
+          </label>
+          <input
+            type="number"
+            placeholder="100000"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            className="w-full bg-navy-dark border border-white/5 text-white px-3 py-2 text-sm outline-none focus:border-gold transition rounded-sm"
+          />
+        </div>
+        {/* Actions */}
+        <div className="flex gap-2 lg:col-span-2">
+          <button
+            type="button"
+            onClick={handleSearch}
+            className="flex-1 bg-gold hover:bg-gold-hover text-navy font-bold uppercase tracking-widest text-xs px-4 py-2.5 transition rounded-sm"
+          >
+            Search
+          </button>
+          <button
+            type="button"
+            onClick={handleClear}
+            className="flex-1 bg-navy-dark hover:bg-black text-white font-bold uppercase tracking-widest text-xs px-4 py-2.5 transition rounded-sm"
+          >
+            Clear
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-
-export default SearchBar;

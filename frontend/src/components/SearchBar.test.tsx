@@ -8,15 +8,15 @@ describe("SearchBar", () => {
 
     render(<SearchBar onSearch={onSearch} />);
 
-    fireEvent.change(screen.getByPlaceholderText(/make/i), {
+    fireEvent.change(screen.getByPlaceholderText(/e.g. Toyota/i), {
       target: { value: "Toyota" },
     });
 
-    fireEvent.change(screen.getByPlaceholderText(/model/i), {
+    fireEvent.change(screen.getByPlaceholderText(/e.g. Corolla/i), {
       target: { value: "Fortuner" },
     });
 
-    fireEvent.change(screen.getByPlaceholderText(/category/i), {
+    fireEvent.change(screen.getByPlaceholderText(/e.g. SUV/i), {
       target: { value: "SUV" },
     });
 
@@ -26,6 +26,8 @@ describe("SearchBar", () => {
       make: "Toyota",
       model: "Fortuner",
       category: "SUV",
+      minPrice: undefined,
+      maxPrice: undefined,
     });
   });
 
@@ -34,13 +36,13 @@ describe("SearchBar", () => {
 
     render(<SearchBar onSearch={onSearch} />);
 
-    fireEvent.change(screen.getByPlaceholderText(/make/i), {
+    fireEvent.change(screen.getByPlaceholderText(/e.g. Toyota/i), {
       target: { value: "Toyota" },
     });
 
     fireEvent.click(screen.getByRole("button", { name: /clear/i }));
 
-    expect(screen.getByPlaceholderText(/make/i)).toHaveValue("");
+    expect(screen.getByPlaceholderText(/e.g. Toyota/i)).toHaveValue("");
     expect(onSearch).toHaveBeenCalledWith({});
   });
 });

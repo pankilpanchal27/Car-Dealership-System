@@ -74,12 +74,12 @@ describe("Dashboard", () => {
       expect(screen.getByText(/No vehicles found/i)).toBeInTheDocument();
     });
 
-    fireEvent.change(screen.getByPlaceholderText(/make/i), { target: { value: "Honda" } });
+    fireEvent.change(screen.getByPlaceholderText(/e.g. Toyota/i), { target: { value: "Honda" } });
     fireEvent.click(screen.getByRole("button", { name: /search/i }));
 
     await waitFor(() => {
       expect(vehicleService.searchVehicles).toHaveBeenCalledWith({
-        make: "Honda", model: undefined, category: undefined,
+        make: "Honda", model: undefined, category: undefined, minPrice: undefined, maxPrice: undefined,
       });
       expect(screen.getByText(/Honda/i)).toBeInTheDocument();
       expect(screen.getByText(/City/i)).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe("Dashboard", () => {
 
     await waitFor(() => expect(screen.getByText(/Toyota/i)).toBeInTheDocument());
 
-    fireEvent.change(screen.getByPlaceholderText(/make/i), { target: { value: "Honda" } });
+    fireEvent.change(screen.getByPlaceholderText(/e.g. Toyota/i), { target: { value: "Honda" } });
     fireEvent.click(screen.getByRole("button", { name: /search/i }));
 
     await waitFor(() => expect(screen.getByText(/Honda/i)).toBeInTheDocument());

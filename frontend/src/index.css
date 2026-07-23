@@ -1,132 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 /* ─── Base ──────────────────────────────────────────────────── */
+:root {
+  --navy: #151f32;
+  --navy-dark: #101827;
+  --gold: #cba365;
+  --gold-hover: #b59055;
+  --gray-bg: #f4f5f7;
+}
+
 * {
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background-color: var(--gray-bg);
+  color: var(--navy);
   margin: 0;
-  background-color: #04060d;
-  color: #f0f4ff;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Scrollbar ─────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #2d3655; border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: #4f5e9e; }
-
-/* ─── Animations ────────────────────────────────────────────── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  33%       { transform: translateY(-12px) rotate(1deg); }
-  66%       { transform: translateY(-6px) rotate(-1deg); }
+/* Headings use Oswald for that condensed bold look */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
+/* ─── Forms & Inputs ────────────────────────────────────────── */
+.input-minimal {
+  @apply w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-[#cba365] focus:ring-1 focus:ring-[#cba365];
 }
 
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
-  50%       { box-shadow: 0 0 40px rgba(99,102,241,0.6); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-.animate-float       { animation: float 6s ease-in-out infinite; }
-.animate-fade-up     { animation: fadeSlideUp 0.5s ease both; }
-.animate-pulse-glow  { animation: pulseGlow 3s ease-in-out infinite; }
-.animate-spin-slow   { animation: spin-slow 20s linear infinite; }
-
-.shimmer-text {
-  background: linear-gradient(
-    90deg,
-    #818cf8 0%,
-    #a78bfa 25%,
-    #f0abfc 50%,
-    #a78bfa 75%,
-    #818cf8 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
-}
-
-/* ─── Glass card ────────────────────────────────────────────── */
-.glass {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-}
-
-.glass-strong {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-}
-
-/* ─── Input base ────────────────────────────────────────────── */
 .input-dark {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.875rem;
-  padding: 0.875rem 1.125rem;
-  color: #f0f4ff;
-  font-size: 0.9rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-.input-dark::placeholder { color: rgba(148, 163, 184, 0.5); }
-.input-dark:focus {
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  @apply w-full rounded border border-white/10 bg-[#101827] px-4 py-3 text-sm text-white outline-none transition focus:border-[#cba365];
 }
 
-/* ─── Button primary ────────────────────────────────────────── */
-.btn-primary {
-  width: 100%;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border: none;
-  border-radius: 0.875rem;
-  padding: 0.875rem 1.5rem;
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.4);
+/* ─── Buttons ───────────────────────────────────────────────── */
+.btn-gold {
+  @apply w-full rounded bg-[#cba365] px-4 py-3 text-sm font-bold uppercase tracking-widest text-[#151f32] transition hover:bg-[#b59055] active:scale-95;
 }
-.btn-primary:hover  { opacity: 0.9; box-shadow: 0 6px 32px rgba(99,102,241,0.55); }
-.btn-primary:active { transform: scale(0.98); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-/* ─── Stagger children ──────────────────────────────────────── */
-.stagger > *:nth-child(1) { animation-delay: 0.05s; }
-.stagger > *:nth-child(2) { animation-delay: 0.10s; }
-.stagger > *:nth-child(3) { animation-delay: 0.15s; }
-.stagger > *:nth-child(4) { animation-delay: 0.20s; }
-.stagger > *:nth-child(5) { animation-delay: 0.25s; }
+.btn-navy {
+  @apply w-full rounded bg-[#151f32] px-4 py-3 text-sm font-bold uppercase tracking-widest text-white transition hover:bg-[#101827] active:scale-95;
+}
+
+.btn-outline-red {
+  @apply w-full rounded border border-red-900/30 bg-red-900/10 px-4 py-2 text-sm font-bold uppercase tracking-widest text-red-500 transition hover:bg-red-900/20 active:scale-95;
+}
+
+.btn-outline-gold {
+  @apply w-full rounded border border-[#cba365]/30 bg-[#cba365]/10 px-4 py-2 text-sm font-bold uppercase tracking-widest text-[#cba365] transition hover:bg-[#cba365]/20 active:scale-95;
+}
+
+/* ─── Utilities ─────────────────────────────────────────────── */
+.bg-navy { background-color: var(--navy); }
+.bg-navy-dark { background-color: var(--navy-dark); }
+.text-navy { color: var(--navy); }
+.text-gold { color: var(--gold); }
+.border-gold { border-color: var(--gold); }
+.bg-gray-bg { background-color: var(--gray-bg); }
+
+/* Diagonal Ribbon for Sold Out */
+.ribbon-wrapper {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.ribbon {
+  font-family: "Oswald", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: white;
+  text-align: center;
+  position: absolute;
+  top: 19px;
+  right: -21px;
+  width: 120px;
+  padding: 4px 0;
+  background-color: #ef4444; /* Red */
+  transform: rotate(45deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

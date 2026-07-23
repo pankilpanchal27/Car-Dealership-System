@@ -50,7 +50,7 @@ export default function VehicleCard({
               onChange={(e) => setRestockAmount(e.target.value)}
             />
             <button 
-              className="bg-navy border border-white/10 px-4 py-2 text-xs font-bold uppercase tracking-widest text-gray-300 hover:text-white hover:border-white/20 transition rounded-sm"
+              className="flex-shrink-0 bg-navy border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-gray-300 hover:text-white hover:border-white/20 transition rounded-sm"
               onClick={() => {
                 if(restockAmount) {
                   onEdit({ ...vehicle, quantity: vehicle.quantity + Number(restockAmount) });

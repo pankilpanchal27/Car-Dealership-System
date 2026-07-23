@@ -3,11 +3,11 @@
 
 /* ─── Base ──────────────────────────────────────────────────── */
 :root {
-  --navy: #151f32;
-  --navy-dark: #101827;
-  --gold: #cba365;
-  --gold-hover: #b59055;
-  --gray-bg: #f4f5f7;
+  --navy: #0f172a;
+  --navy-dark: #020617;
+  --gold: #3b82f6;
+  --gold-hover: #2563eb;
+  --gray-bg: #f8fafc;
 }
 
 * {

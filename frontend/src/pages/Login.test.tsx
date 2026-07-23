@@ -11,7 +11,14 @@ vi.mock("../services/authService");
 describe("Login Page", () => {
   it("logs in the user and navigates to dashboard", async () => {
     vi.mocked(authService.login).mockResolvedValue({
+      success: true,
       token: "jwt-token",
+      user: {
+        _id: "1",
+        name: "Pankil",
+        email: "test@example.com",
+        role: "user",
+      },
     });
 
     render(

@@ -1,29 +1,42 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { vi } from "vitest";
+
+import { AuthProvider } from "../context/AuthProvider";
 import Login from "./Login";
+import * as authService from "../services/authService";
+
+vi.mock("../services/authService");
 
 describe("Login Page", () => {
-  it("renders the login form", () => {
+  it("logs in the user and navigates to dashboard", async () => {
+    vi.mocked(authService.login).mockResolvedValue({
+      token: "jwt-token",
+    });
+
     render(
       <MemoryRouter>
-        <Login />
+        <AuthProvider>
+          <Login />
+        </AuthProvider>
       </MemoryRouter>
     );
 
-    expect(
-      screen.getByRole("heading", { name: /login/i })
-    ).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText(/email/i), {
+      target: { value: "test@example.com" },
+    });
 
-    expect(
-      screen.getByLabelText(/email/i)
-    ).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: "password123" },
+    });
 
-    expect(
-      screen.getByLabelText(/password/i)
-    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /login/i }));
 
-    expect(
-      screen.getByRole("button", { name: /login/i })
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(authService.login).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "password123",
+      });
+    });
   });
 });

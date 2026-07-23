@@ -10,8 +10,9 @@ describe("App Routing", () => {
       </MemoryRouter>
     );
 
+    // The redesigned login page shows the app brand as h1 and form heading as h2
     expect(
-      screen.getByRole("heading", { name: /login/i })
+      screen.getByRole("heading", { name: /car dealership/i })
     ).toBeInTheDocument();
   });
 
@@ -23,7 +24,7 @@ describe("App Routing", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: /register/i })
+      screen.getByRole("heading", { name: /create account/i })
     ).toBeInTheDocument();
   });
 });

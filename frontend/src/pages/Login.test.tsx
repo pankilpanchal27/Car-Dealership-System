@@ -37,7 +37,7 @@ describe("Login Page", () => {
       target: { value: "password123" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /login/i }));
+    fireEvent.click(screen.getByRole("button", { name: /sign in/i }));
 
     await waitFor(() => {
       expect(authService.login).toHaveBeenCalledWith({

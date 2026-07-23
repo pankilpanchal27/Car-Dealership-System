@@ -28,3 +28,20 @@ export async function login(
 
   return response.data;
 }
+
+export interface RegisterCredentials {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export async function register(
+  credentials: RegisterCredentials
+): Promise<LoginResponse> {
+  const response = await api.post<LoginResponse>(
+    "/auth/register",
+    credentials
+  );
+
+  return response.data;
+}

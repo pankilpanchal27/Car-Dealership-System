@@ -59,6 +59,8 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 /* ─── Utilities ─────────────────────────────────────────────── */
 .bg-navy { background-color: var(--navy); }
 .bg-navy-dark { background-color: var(--navy-dark); }
+.bg-gold { background-color: var(--gold); }
+.hover\:bg-gold-hover:hover { background-color: var(--gold-hover); }
 .text-navy { color: var(--navy); }
 .text-gold { color: var(--gold); }
 .border-gold { border-color: var(--gold); }

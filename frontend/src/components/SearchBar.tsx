@@ -116,7 +116,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
           <button
             type="button"
             onClick={handleSearch}
-            className="flex-1 bg-gold hover:bg-gold-hover text-navy font-bold uppercase tracking-widest text-xs px-4 py-2.5 transition rounded-sm"
+            className="flex-1 bg-gold hover:bg-gold-hover text-white font-bold uppercase tracking-widest text-xs px-4 py-2.5 transition rounded-sm"
           >
             Search
           </button>

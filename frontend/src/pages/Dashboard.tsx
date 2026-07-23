@@ -141,7 +141,6 @@ export default function Dashboard() {
           isAdmin={true}
           isActuallyAdmin={isActuallyAdmin}
           onLogout={logout} 
-          viewAsCustomer={viewAsCustomer}
           onToggleView={() => setViewAsCustomer(!viewAsCustomer)}
         />
         
@@ -260,8 +259,7 @@ export default function Dashboard() {
         isAdmin={false} 
         isActuallyAdmin={isActuallyAdmin}
         onLogout={logout}
-        viewAsCustomer={viewAsCustomer}
-        onToggleView={() => setViewAsCustomer(!viewAsCustomer)}
+        onToggleView={() => setViewAsCustomer(false)}
       />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10 flex flex-col">

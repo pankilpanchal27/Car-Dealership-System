@@ -21,7 +21,7 @@ function renderWithAuth(
     <AuthContext.Provider
       value={{
         token: "tok",
-        user: { id: "1", role },
+        user: { id: "1", role, name: role === "admin" ? "Admin User" : "Test User" },
         isAuthenticated: true,
         login: vi.fn(),
         logout: vi.fn(),

@@ -12,7 +12,7 @@ import { useAuth } from "../context/useAuth";
 describe("Navbar", () => {
   beforeEach(() => {
     vi.mocked(useAuth).mockReturnValue({
-      user: { id: "1", role: "user" },
+      user: { id: "1", role: "user", name: "Test User" },
       login: vi.fn(),
       logout: vi.fn(),
       isAuthenticated: true,
@@ -27,7 +27,7 @@ describe("Navbar", () => {
 
   it("renders the admin branding when admin", () => {
     vi.mocked(useAuth).mockReturnValue({
-      user: { id: "1", role: "admin" },
+      user: { id: "1", role: "admin", name: "Admin User" },
       login: vi.fn(),
       logout: vi.fn(),
       isAuthenticated: true,

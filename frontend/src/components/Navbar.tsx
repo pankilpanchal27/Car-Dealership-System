@@ -3,12 +3,11 @@ import { useAuth } from "../context/useAuth";
 interface NavbarProps {
   isAdmin: boolean;
   isActuallyAdmin?: boolean;
-  viewAsCustomer?: boolean;
   onToggleView?: () => void;
   onLogout: () => void;
 }
 
-export default function Navbar({ isAdmin, isActuallyAdmin, viewAsCustomer, onToggleView, onLogout }: NavbarProps) {
+export default function Navbar({ isAdmin, isActuallyAdmin, onToggleView, onLogout }: NavbarProps) {
   const { user } = useAuth();
   const userName = user?.name || user?.role || "user";
 

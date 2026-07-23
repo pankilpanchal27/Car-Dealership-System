@@ -13,12 +13,22 @@ export const searchVehicles = async (query: {
     make?: string;
     model?: string;
     category?: string;
+    minPrice?: number;
+    maxPrice?: number;
   }) => {
-    const filter: Record<string, string> = {};
+    const filter: Record<string, unknown> = {};
   
     if (query.make) filter.make = query.make;
     if (query.model) filter.model = query.model;
     if (query.category) filter.category = query.category;
+
+    // Price range filter
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      const priceFilter: { $gte?: number; $lte?: number } = {};
+      if (query.minPrice !== undefined) priceFilter.$gte = query.minPrice;
+      if (query.maxPrice !== undefined) priceFilter.$lte = query.maxPrice;
+      filter.price = priceFilter;
+    }
   
     return await Vehicle.find(filter);
 };

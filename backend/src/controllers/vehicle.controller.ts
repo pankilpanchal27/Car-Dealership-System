@@ -52,10 +52,14 @@ export const searchVehiclesHandler = async (
     res: Response
 ): Promise<void> => {
   try {
+    const { make, model, category, minPrice, maxPrice } = req.query;
+
     const vehicles = await searchVehicles({
-      make: req.query.make as string,
-      model: req.query.model as string,
-      category: req.query.category as string,
+      make: make as string,
+      model: model as string,
+      category: category as string,
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
     });
   
     res.status(200).json({

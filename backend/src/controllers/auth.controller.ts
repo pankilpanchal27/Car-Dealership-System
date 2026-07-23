@@ -30,8 +30,6 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 export const login = async (req: Request, res: Response) => {
-  console.log("Login endpoint hit");
-  console.log(req.body);
   try {
     const { token, user } = await loginUser(req.body);
 
@@ -46,8 +44,6 @@ export const login = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.error(error);
-  
     if (
       error instanceof Error &&
       error.message === "Invalid email or password"
@@ -58,6 +54,7 @@ export const login = async (req: Request, res: Response) => {
       });
     }
   
+    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Internal Server Error",

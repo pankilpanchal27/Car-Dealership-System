@@ -8,11 +8,16 @@ A full-stack Car Dealership Inventory System built with **Node.js/TypeScript + E
 
 > _Run the app locally and use the steps below to see it in action._
 
-| Page | Description |
-|---|---|
-| **Login** | Dark glassmorphism card with ambient glow effects |
-| **Register** | Matching design with navigation link to Login |
-| **Dashboard** | Responsive vehicle grid, search filters, purchase, admin CRUD |
+### Customer View
+![Customer View](docs/images/customer-view.png)
+
+### Admin Dashboard
+![Admin Dashboard](docs/images/admin-view.png)
+
+### Authentication Pages
+![Register Page](docs/images/register.png)
+<br>
+![Login Page](docs/images/login.png)
 
 ---
 

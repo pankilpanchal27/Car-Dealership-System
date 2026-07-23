@@ -7,19 +7,28 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState<string | null>(
+    () => localStorage.getItem("token")
+  );
 
-  const login = () => setIsAuthenticated(true);
+  const login = (jwt: string) => {
+    localStorage.setItem("token", jwt);
+    setToken(jwt);
+  };
 
-  const logout = () => setIsAuthenticated(false);
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
 
   const value = useMemo(
     () => ({
-      isAuthenticated,
+      token,
+      isAuthenticated: !!token,
       login,
       logout,
     }),
-    [isAuthenticated]
+    [token]
   );
 
   return (

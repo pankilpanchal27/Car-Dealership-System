@@ -54,6 +54,7 @@ export const registerUser = async ({
     {
       id: user._id,
       role: user.role,
+      name: user.name,
     },
     process.env.JWT_SECRET as string,
     {

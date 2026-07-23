@@ -7,7 +7,7 @@ interface NavbarProps {
 
 export default function Navbar({ isAdmin, onLogout }: NavbarProps) {
   const { user } = useAuth();
-  const userName = user?.role || "user";
+  const userName = user?.name || user?.role || "user";
 
   if (isAdmin) {
     return (
@@ -30,9 +30,7 @@ export default function Navbar({ isAdmin, onLogout }: NavbarProps) {
               Hello, {userName}
             </span>
             <div className="flex items-center gap-3">
-              <button className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-white/10 rounded">
-                VIEW STORE
-              </button>
+              {/* VIEW STORE button removed */}
               <button
                 onClick={onLogout}
                 className="border border-white/20 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-white/10 rounded"

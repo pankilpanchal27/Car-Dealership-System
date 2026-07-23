@@ -32,20 +32,20 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 
 /* ─── Forms & Inputs ────────────────────────────────────────── */
 .input-minimal {
-  @apply w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-[#cba365] focus:ring-1 focus:ring-[#cba365];
+  @apply w-full rounded border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition focus:border-[var(--gold)] focus:ring-1 focus:ring-[var(--gold)];
 }
 
 .input-dark {
-  @apply w-full rounded border border-white/10 bg-[#101827] px-4 py-3 text-sm text-white outline-none transition focus:border-[#cba365];
+  @apply w-full rounded border border-white/10 bg-[var(--navy-dark)] px-4 py-3 text-sm text-white outline-none transition focus:border-[var(--gold)];
 }
 
 /* ─── Buttons ───────────────────────────────────────────────── */
 .btn-gold {
-  @apply w-full rounded bg-[#cba365] px-4 py-3 text-sm font-bold uppercase tracking-widest text-[#151f32] transition hover:bg-[#b59055] active:scale-95;
+  @apply w-full rounded bg-[var(--gold)] px-4 py-3 text-sm font-bold uppercase tracking-widest text-white transition hover:bg-[var(--gold-hover)] active:scale-95;
 }
 
 .btn-navy {
-  @apply w-full rounded bg-[#151f32] px-4 py-3 text-sm font-bold uppercase tracking-widest text-white transition hover:bg-[#101827] active:scale-95;
+  @apply w-full rounded bg-[var(--navy)] px-4 py-3 text-sm font-bold uppercase tracking-widest text-white transition hover:bg-[var(--navy-dark)] active:scale-95;
 }
 
 .btn-outline-red {
@@ -53,7 +53,7 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 
 .btn-outline-gold {
-  @apply w-full rounded border border-[#cba365]/30 bg-[#cba365]/10 px-4 py-2 text-sm font-bold uppercase tracking-widest text-[#cba365] transition hover:bg-[#cba365]/20 active:scale-95;
+  @apply w-full rounded border border-[var(--gold)]/30 bg-[var(--gold)]/10 px-4 py-2 text-sm font-bold uppercase tracking-widest text-[var(--gold)] transition hover:bg-[var(--gold)]/20 active:scale-95;
 }
 
 /* ─── Utilities ─────────────────────────────────────────────── */

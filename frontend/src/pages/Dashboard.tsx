@@ -160,11 +160,11 @@ export default function Dashboard() {
             </div>
             <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
               <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">$</span>
+                <span className="w-3 h-3 bg-white/10 rounded flex items-center justify-center text-white text-[8px]">₹</span>
                 Total Value
               </p>
               <p className="text-3xl font-heading tracking-wide text-gold">
-                ${stats.totalValue.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+                ₹{stats.totalValue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </p>
             </div>
             <div className="bg-navy-dark border border-white/5 rounded-sm p-5 shadow-sm">
@@ -197,7 +197,7 @@ export default function Dashboard() {
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Price</label>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Price (₹)</label>
                     <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="input-dark rounded-sm py-2 px-3 text-xs" />
                   </div>
                   <div className="flex flex-col gap-1.5">

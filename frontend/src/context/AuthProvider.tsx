@@ -14,7 +14,7 @@ interface AuthProviderProps {
 function decodeToken(token: string): AuthUser | null {
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-    return { id: payload.id, role: payload.role };
+    return { id: payload.id, role: payload.role, name: payload.name || payload.role };
   } catch {
     return null;
   }

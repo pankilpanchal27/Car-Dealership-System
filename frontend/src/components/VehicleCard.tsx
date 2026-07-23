@@ -37,7 +37,7 @@ export default function VehicleCard({
         </h2>
         
         <p className="text-gold font-mono text-sm mb-6">
-          ${vehicle.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          ₹{vehicle.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </p>
 
         <div className="mt-auto flex flex-col gap-3">
@@ -104,7 +104,7 @@ export default function VehicleCard({
       
       <div className="border-l-[4px] border-gold pl-3 mb-6">
         <p className="font-mono text-lg font-bold text-navy">
-          ${vehicle.price.toLocaleString("en-US", { minimumFractionDigits: 2 })}
+          ₹{vehicle.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </p>
       </div>
 

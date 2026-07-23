@@ -82,31 +82,29 @@ export default function VehicleCard({
 
   // Customer Variant
   return (
-    <article className="relative flex flex-col overflow-hidden bg-white shadow-sm border border-gray-100 p-6 rounded-sm transition hover:shadow-md">
+    <article className="relative flex flex-col overflow-hidden bg-navy-dark border border-white/5 p-6 rounded-sm text-white transition hover:border-white/10">
       {!inStock && (
         <div className="ribbon-wrapper">
           <div className="ribbon">Sold Out</div>
         </div>
       )}
 
-      <div className="flex justify-between items-start mb-4">
-        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-200 px-2 py-0.5 rounded-sm bg-gray-50">
+      <div className="flex justify-between items-start mb-2">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 border border-white/10 px-2 py-0.5 rounded-sm bg-white/5">
           {vehicle.category}
         </span>
-        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-500 bg-emerald-50' : 'text-red-500 bg-red-50'}`}>
+        <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-sm ${inStock ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'}`}>
           {vehicle.quantity} in stock
         </span>
       </div>
 
-      <h2 className="text-xl font-heading text-navy mt-1 mb-4">
+      <h2 className="text-xl font-bold mt-1 mb-1">
         {vehicle.make} {vehicle.model}
       </h2>
       
-      <div className="border-l-[4px] border-gold pl-3 mb-6">
-        <p className="font-mono text-lg font-bold text-navy">
-          ₹{vehicle.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-        </p>
-      </div>
+      <p className="text-gold font-mono text-sm mb-6">
+        ₹{vehicle.price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+      </p>
 
       <div className="mt-auto">
         <button
@@ -114,8 +112,8 @@ export default function VehicleCard({
           disabled={!inStock}
           className={`w-full py-3 text-xs font-bold uppercase tracking-widest transition rounded-sm ${
             inStock
-              ? "bg-navy text-white hover:bg-navy-dark"
-              : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              ? "bg-gold text-white hover:bg-gold-hover"
+              : "bg-white/5 text-gray-500 cursor-not-allowed border border-white/10"
           }`}
         >
           Purchase

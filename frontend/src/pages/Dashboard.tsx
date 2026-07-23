@@ -16,7 +16,11 @@ import {
 
 export default function Dashboard() {
   const { user, logout } = useAuth();
-  const isAdmin = user?.role === "admin";
+  
+  // View mode state for admin
+  const [viewAsCustomer, setViewAsCustomer] = useState(false);
+  const isActuallyAdmin = user?.role === "admin";
+  const isAdminView = isActuallyAdmin && !viewAsCustomer;
 
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
@@ -130,10 +134,16 @@ export default function Dashboard() {
   }
 
   // ─── Admin View ────────────────────────────────────────────────────────────
-  if (isAdmin) {
+  if (isAdminView) {
     return (
       <div className="min-h-screen bg-navy text-white font-sans flex flex-col">
-        <Navbar isAdmin={isAdmin} onLogout={logout} />
+        <Navbar 
+          isAdmin={true}
+          isActuallyAdmin={isActuallyAdmin}
+          onLogout={logout} 
+          viewAsCustomer={viewAsCustomer}
+          onToggleView={() => setViewAsCustomer(!viewAsCustomer)}
+        />
         
         <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 py-8 flex flex-col">
           {error && (
@@ -220,7 +230,7 @@ export default function Dashboard() {
               ) : (
                 <VehicleList
                   vehicles={vehicles}
-                  isAdmin={isAdmin}
+                  isAdmin={true}
                   onPurchase={handlePurchase}
                   onEdit={(v) => setEditTarget(v)}
                   onDelete={handleDelete}
@@ -245,12 +255,18 @@ export default function Dashboard() {
 
   // ─── Customer View ─────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-bg text-navy font-sans flex flex-col">
-      <Navbar isAdmin={isAdmin} onLogout={logout} />
+    <div className="min-h-screen bg-navy text-white font-sans flex flex-col">
+      <Navbar 
+        isAdmin={false} 
+        isActuallyAdmin={isActuallyAdmin}
+        onLogout={logout}
+        viewAsCustomer={viewAsCustomer}
+        onToggleView={() => setViewAsCustomer(!viewAsCustomer)}
+      />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10 flex flex-col">
         {error && (
-          <p className="mb-6 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
+          <p className="mb-6 rounded bg-red-900/30 px-4 py-3 text-sm font-medium text-red-400 border border-red-900/50">
             {error}
           </p>
         )}
@@ -264,7 +280,7 @@ export default function Dashboard() {
         ) : (
           <VehicleList
             vehicles={vehicles}
-            isAdmin={isAdmin}
+            isAdmin={false}
             onPurchase={handlePurchase}
             onEdit={(v) => setEditTarget(v)}
             onDelete={handleDelete}

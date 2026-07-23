@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import SearchBar from "../components/SearchBar";
 import VehicleList from "../components/VehicleList";
 import {
   getVehicles,
+  searchVehicles,
   type Vehicle,
 } from "../services/vehicleService";
 
@@ -10,36 +12,73 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    async function loadVehicles() {
-      try {
-        const response = await getVehicles();
-        setVehicles(response.vehicles);
-      } catch (err) {
-        setError("Failed to load vehicles.");
-      } finally {
-        setLoading(false);
-      }
-    }
+  async function loadVehicles() {
+    try {
+      setLoading(true);
 
+      const response = await getVehicles();
+
+      setVehicles(response.vehicles);
+      setError("");
+    } catch {
+      setError("Failed to load vehicles.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
     loadVehicles();
   }, []);
 
+  async function handleSearch(filters: {
+    make?: string;
+    model?: string;
+    category?: string;
+  }) {
+    const hasFilters =
+      filters.make || filters.model || filters.category;
+
+    if (!hasFilters) {
+      await loadVehicles();
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await searchVehicles(filters);
+
+      setVehicles(response.vehicles);
+      setError("");
+    } catch {
+      setError("Failed to search vehicles.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (loading) {
     return (
-      <div className="p-6">
-        <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
+      <main className="p-6">
+        <h1 className="mb-6 text-3xl font-bold">
+          Vehicle Inventory
+        </h1>
+
         <p>Loading vehicles...</p>
-      </div>
+      </main>
     );
   }
 
   if (error) {
     return (
-      <div className="p-6">
-        <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
+      <main className="p-6">
+        <h1 className="mb-6 text-3xl font-bold">
+          Vehicle Inventory
+        </h1>
+
         <p className="text-red-600">{error}</p>
-      </div>
+      </main>
     );
   }
 
@@ -48,6 +87,8 @@ function Dashboard() {
       <h1 className="mb-6 text-3xl font-bold">
         Vehicle Inventory
       </h1>
+
+      <SearchBar onSearch={handleSearch} />
 
       {vehicles.length === 0 ? (
         <p>No vehicles available.</p>

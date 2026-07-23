@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { useAuth, AuthProvider } from "./AuthContext";
+import { AuthProvider } from "./AuthProvider";
+import { useAuth } from "../hooks/useAuth";
 
 function TestComponent() {
   const { isAuthenticated } = useAuth();
@@ -21,4 +22,4 @@ describe("AuthContext", () => {
       screen.getByText("Not Authenticated")
     ).toBeInTheDocument();
   });
-}
+})

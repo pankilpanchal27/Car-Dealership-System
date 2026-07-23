@@ -157,15 +157,10 @@ function Dashboard() {
             ))}
           </div>
         ) : vehicles.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-up">
-            <div className="relative">
-              <div className="absolute inset-0 rounded-full bg-indigo-500/10 blur-3xl" />
-              <img 
-                src="/assets/empty_state_garage.png" 
-                alt="Empty Garage" 
-                className="relative z-10 mx-auto mb-6 h-64 w-auto rounded-2xl object-cover opacity-80 shadow-2xl ring-1 ring-white/5 grayscale-[0.2]"
-              />
-            </div>
+          <div className="flex flex-col items-center justify-center py-32 text-center animate-fade-up glass-strong rounded-3xl mt-8">
+            <span className="mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-indigo-500/10 text-4xl shadow-[0_0_30px_rgba(99,102,241,0.15)] ring-1 ring-indigo-500/20">
+              📭
+            </span>
             <h3 className="text-2xl font-bold text-white mb-2">No vehicles found</h3>
             <p className="text-gray-400 max-w-md">
               We couldn't find any vehicles matching your current filters, or the inventory is completely sold out.

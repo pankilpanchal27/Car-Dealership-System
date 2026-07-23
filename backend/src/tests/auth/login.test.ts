@@ -29,5 +29,33 @@ describe("POST /api/auth/login", () => {
     expect(response.body).toHaveProperty("token");
 
     expect(response.body.user.email).toBe("pankil@example.com");
+
+    expect(response.body.user.role).toBeDefined();
+  });
+
+  it("should return 401 with invalid credentials", async () => {
+    const response = await request(app)
+      .post("/api/auth/login")
+      .send({
+        email: "pankil@example.com",
+        password: "wrongpassword",
+      });
+
+    expect(response.status).toBe(401);
+    expect(response.body.success).toBe(false);
+    expect(response.body.message).toBe("Invalid email or password");
+  });
+
+  it("should return 401 when email does not exist", async () => {
+    const response = await request(app)
+      .post("/api/auth/login")
+      .send({
+        email: "noone@example.com",
+        password: "password123",
+      });
+
+    expect(response.status).toBe(401);
+    expect(response.body.success).toBe(false);
+    expect(response.body.message).toBe("Invalid email or password");
   });
 });

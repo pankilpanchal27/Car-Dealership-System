@@ -12,6 +12,6 @@ describe("Axios API Client", () => {
 
     const handlers = api.interceptors.request.handlers;
 
-    expect(handlers.length).toBeGreaterThan(0);
+    expect(handlers?.length ?? 0).toBeGreaterThan(0);
   });
 });

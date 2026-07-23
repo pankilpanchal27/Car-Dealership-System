@@ -8,18 +8,20 @@ interface NavbarProps {
  */
 export default function Navbar({ isAdmin, onLogout }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-gray-900/80 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#04060d]/60 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Branding */}
         <div className="flex items-center gap-3">
-          <span className="text-2xl">🚗</span>
-          <span className="text-xl font-bold tracking-tight text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500/20 text-sm shadow-[0_0_10px_rgba(99,102,241,0.3)]">
+            🚗
+          </span>
+          <span className="text-lg font-bold tracking-tight text-white">
             Car Dealership
           </span>
           {isAdmin && (
             <span
               data-testid="admin-badge"
-              className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-amber-400 ring-1 ring-amber-500/40"
+              className="ml-2 rounded-md bg-indigo-500/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-indigo-400 ring-1 ring-indigo-500/40"
             >
               Admin
             </span>
@@ -29,7 +31,7 @@ export default function Navbar({ isAdmin, onLogout }: NavbarProps) {
         {/* Actions */}
         <button
           onClick={onLogout}
-          className="rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/20 active:scale-95"
+          className="rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 active:scale-95"
         >
           Logout
         </button>

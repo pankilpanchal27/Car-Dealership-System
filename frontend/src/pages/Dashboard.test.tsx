@@ -71,7 +71,7 @@ describe("Dashboard", () => {
     renderWithAuth(<Dashboard />);
 
     await waitFor(() => {
-      expect(screen.getByText(/No vehicles available/i)).toBeInTheDocument();
+      expect(screen.getByText(/No vehicles found/i)).toBeInTheDocument();
     });
 
     fireEvent.change(screen.getByPlaceholderText(/make/i), { target: { value: "Honda" } });

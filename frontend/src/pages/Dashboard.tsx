@@ -111,25 +111,25 @@ function Dashboard() {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-[#04060d] text-white">
       <Navbar isAdmin={isAdmin} onLogout={logout} />
 
-      <main className="mx-auto max-w-7xl px-6 py-10">
+      <main className="mx-auto max-w-7xl px-6 py-10 animate-fade-up">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold tracking-tight text-white">
+        <div className="mb-8 flex items-end justify-between">
+          <div className="relative z-10">
+            <h1 className="text-4xl font-extrabold tracking-tight text-white shimmer-text">
               Vehicle Inventory
             </h1>
-            <p className="mt-1 text-gray-400">
-              Browse and purchase from our latest collection
+            <p className="mt-2 text-gray-400 font-medium">
+              Browse and purchase from our latest premium collection.
             </p>
           </div>
 
           {isAdmin && (
             <button
               onClick={() => setShowAddModal(true)}
-              className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-500 active:scale-95"
+              className="btn-primary w-auto shadow-[0_0_15px_rgba(99,102,241,0.3)]"
             >
               + Add Vehicle
             </button>
@@ -141,26 +141,34 @@ function Dashboard() {
 
         {/* Error */}
         {error && (
-          <p className="mb-6 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-400 ring-1 ring-red-500/30">
+          <p className="mb-6 rounded-xl bg-red-500/10 px-4 py-3 text-sm font-medium text-red-400 ring-1 ring-red-500/30">
             {error}
           </p>
         )}
 
         {/* Vehicle grid */}
         {loading ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 stagger">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="h-64 animate-pulse rounded-2xl bg-white/5"
+                className="h-72 animate-pulse rounded-2xl glass-strong"
               />
             ))}
           </div>
         ) : vehicles.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <span className="text-6xl">🚗</span>
-            <p className="mt-4 text-lg text-gray-400">
-              No vehicles available.
+          <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-up">
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-indigo-500/10 blur-3xl" />
+              <img 
+                src="/assets/empty_state_garage.png" 
+                alt="Empty Garage" 
+                className="relative z-10 mx-auto mb-6 h-64 w-auto rounded-2xl object-cover opacity-80 shadow-2xl ring-1 ring-white/5 grayscale-[0.2]"
+              />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">No vehicles found</h3>
+            <p className="text-gray-400 max-w-md">
+              We couldn't find any vehicles matching your current filters, or the inventory is completely sold out.
             </p>
           </div>
         ) : (

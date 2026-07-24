@@ -1,6 +1,6 @@
 # 🚗 Car Dealership Inventory System
 
-**🚀 Live Demo:** [View Dashboard on Vercel](https://pankilpanchal27-car-dealership-system.vercel.app/dashboard)
+**🚀 Live Demo:** [View on Vercel](https://pankilpanchal27-car-dealership-system.vercel.app/)
 
 A full-stack Car Dealership Inventory System built with **Node.js/TypeScript + Express + MongoDB** on the backend and **React + Vite + Tailwind CSS** on the frontend. Built following strict **Test-Driven Development (TDD)** with a Red → Green → Refactor commit discipline.
 

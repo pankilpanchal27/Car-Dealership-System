@@ -4,7 +4,42 @@ This file documents the prompts I wrote to Antigravity IDE (powered by Gemini / 
 
 ---
 
-## Session Overview
+## Initial Project Setup (via ChatGPT)
+
+Before Antigravity IDE took over to complete the project, the initial scaffolding and foundational setup were generated using ChatGPT. Here are the conceptual prompts used to establish the project base:
+
+### Initial Scaffold: Backend Setup
+**My Prompt:**
+> Create a Node.js and Express backend with TypeScript. Set up a MongoDB connection using Mongoose. Include a basic `server.ts` and `app.ts` structure, configure CORS, and set up `.env` for the database URI and port. Also, configure `jest` for testing.
+
+**ChatGPT Generated:**
+- Initialized Node project, installed dependencies (`express`, `mongoose`, `dotenv`, `cors`, `typescript`, `jest`).
+- Created `server.ts` and database connection logic.
+- Set up basic middleware and health check endpoint.
+
+### Initial Scaffold: User & Auth Foundation
+**My Prompt:**
+> Create a Mongoose User model with name, email, password, and role (admin/user). Create authentication routes and controllers for registering and logging in, making sure to use `bcrypt` for password hashing and `jsonwebtoken` for auth tokens. Follow TDD and write tests for these endpoints.
+
+**ChatGPT Generated:**
+- `User` model schema.
+- `auth.controller.ts`, `auth.service.ts`, `auth.routes.ts`.
+- Added JWT generation on login.
+- Wrote initial Jest tests for auth endpoints.
+
+### Initial Scaffold: Frontend Setup
+**My Prompt:**
+> Spin up a React frontend using Vite and TypeScript. Install Tailwind CSS and `react-router-dom`. Create a basic folder structure for pages, components, services, and context. Also, configure Vitest and Testing Library for frontend tests.
+
+**ChatGPT Generated:**
+- Initialized Vite project with React/TS.
+- Configured Tailwind CSS.
+- Created `src/pages`, `src/components`, and `src/services` structure.
+- Created `AuthContext` boilerplate and basic routing.
+
+---
+
+## Session Overview (Antigravity IDE)
 
 **Tool Used:** Antigravity IDE (Google DeepMind)
 **Models Used:** Gemini 2.5 Pro, Claude Sonnet 4.6 (Thinking)

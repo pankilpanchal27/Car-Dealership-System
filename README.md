@@ -222,7 +222,8 @@ Co-authored-by: Antigravity <AI@users.noreply.github.com>
 ## My AI Usage
 
 ### Tools Used
-- **Antigravity IDE (Gemini / Claude Sonnet 4.6)** — the primary AI assistant used throughout this project
+- **ChatGPT (OpenAI)** — Used for the initial project scaffolding, backend configurations, frontend setup, and establishing the foundational architecture.
+- **Antigravity IDE (Gemini / Claude Sonnet 4.6)** — The primary AI assistant used to complete the project, implement advanced features, polish the UI design, and strictly enforce the TDD workflow.
 
 ### How I Used AI
 

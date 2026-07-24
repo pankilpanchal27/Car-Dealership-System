@@ -1,5 +1,7 @@
 # 🚗 Car Dealership Inventory System
 
+**🚀 Live Demo:** [View Dashboard on Vercel](https://pankilpanchal27-car-dealership-system.vercel.app/dashboard)
+
 A full-stack Car Dealership Inventory System built with **Node.js/TypeScript + Express + MongoDB** on the backend and **React + Vite + Tailwind CSS** on the frontend. Built following strict **Test-Driven Development (TDD)** with a Red → Green → Refactor commit discipline.
 
 ---
@@ -118,6 +120,22 @@ mongosh
 use car-dealership
 db.users.updateOne({ email: "your@email.com" }, { $set: { role: "admin" } })
 ```
+
+---
+
+## Deployment
+
+The application is configured for easy deployment on **Vercel** (Frontend) and **Render** (Backend).
+
+### Backend (Render)
+- The project includes a `render.yaml` blueprint at the root.
+- Simply connect the repository to Render and deploy as a Blueprint.
+- Ensure you set `MONGODB_URI`, `JWT_SECRET`, and `NODE_VERSION=20` in the Render dashboard.
+
+### Frontend (Vercel)
+- The project includes `frontend/vercel.json` for SPA routing.
+- Connect the project to Vercel.
+- Set the `VITE_API_BASE_URL` environment variable to your Render backend URL (e.g., `https://your-backend.onrender.com/api`).
 
 ---
 

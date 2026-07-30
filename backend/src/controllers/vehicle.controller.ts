@@ -8,12 +8,22 @@ import {
   purchaseVehicle,
   restockVehicle,
 } from "../services/vehicle.service";
+import { moderateVehicleContent } from "../services/moderation.service";
 
 export const createVehicleHandler = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
+    const moderationResult = await moderateVehicleContent(req.body);
+    if (!moderationResult.isAppropriate) {
+      res.status(400).json({
+        success: false,
+        message: `Content rejected: ${moderationResult.reason}`,
+      });
+      return;
+    }
+
     const vehicle = await createVehicle(req.body);
 
     res.status(201).json({

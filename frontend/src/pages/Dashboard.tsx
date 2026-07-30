@@ -299,7 +299,7 @@ export default function Dashboard() {
         onToggleView={() => setViewAsCustomer(false)}
       />
 
-      <div className="page-container-narrow">
+      <div className="page-container">
         <ErrorAlert />
 
         {/* Hero section */}

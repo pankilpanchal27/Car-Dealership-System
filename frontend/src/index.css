@@ -6,6 +6,7 @@
 ═══════════════════════════════════════════════════════════ */
 :root,
 [data-theme="dark"] {
+  color-scheme: dark;
   /* Backgrounds */
   --bg-primary: #0d0d14;
   --bg-surface: #13131e;
@@ -56,6 +57,7 @@
    DESIGN TOKENS — Light Mode
 ═══════════════════════════════════════════════════════════ */
 [data-theme="light"] {
+  color-scheme: light;
   /* Backgrounds */
   --bg-primary: #f4f4f8;
   --bg-surface: #ffffff;
@@ -408,6 +410,22 @@ a:hover {
 
 .form-input:hover:not(:focus) {
   border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Number input spinners integration */
+.form-input[type="number"] {
+  -moz-appearance: textfield;
+}
+.form-input[type="number"]::-webkit-inner-spin-button,
+.form-input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0.3;
+  transition: opacity 0.2s;
+  cursor: pointer;
+  height: 24px;
+}
+.form-input[type="number"]:hover::-webkit-inner-spin-button,
+.form-input[type="number"]:hover::-webkit-outer-spin-button {
+  opacity: 0.8;
 }
 
 /* ═══════════════════════════════════════════════════════════

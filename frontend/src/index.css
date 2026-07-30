@@ -417,6 +417,7 @@ a:hover {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
 .form-input[type="number"]::-webkit-inner-spin-button,
 .form-input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button,
@@ -1048,7 +1049,7 @@ input[type="number"]::-webkit-outer-spin-button {
   text-transform: uppercase;
   transform: rotate(-45deg);
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .vehicle-card-body {

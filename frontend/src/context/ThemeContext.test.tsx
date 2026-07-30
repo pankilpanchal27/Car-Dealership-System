@@ -1,3 +1,4 @@
+/// <reference types="vitest/globals" />
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import { ThemeProvider } from "./ThemeProvider";
 import { useTheme } from "./useTheme";

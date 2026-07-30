@@ -55,6 +55,20 @@ describe("Dashboard", () => {
     });
   });
 
+  it("renders a loading spinner while fetching data", () => {
+    vi.mocked(vehicleService.getVehicles).mockReturnValue(new Promise(() => {}));
+    renderWithAuth(<Dashboard />);
+    expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
+  });
+
+  it("shows error alert when data fails to load", async () => {
+    vi.mocked(vehicleService.getVehicles).mockRejectedValue(new Error("fail"));
+    renderWithAuth(<Dashboard />);
+    await waitFor(() => {
+      expect(screen.getByRole("alert")).toBeInTheDocument();
+    });
+  });
+
   it("searches vehicles by filters", async () => {
     vi.mocked(vehicleService.getVehicles).mockResolvedValue({
       success: true,
@@ -74,13 +88,14 @@ describe("Dashboard", () => {
       expect(screen.getByText(/No vehicles found/i)).toBeInTheDocument();
     });
 
-    fireEvent.change(screen.getByPlaceholderText(/e.g. Toyota/i), { target: { value: "Honda" } });
-    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    fireEvent.click(screen.getByRole("button", { name: /filters/i }));
+    fireEvent.change(screen.getByPlaceholderText(/e\.g\. Toyota/i), { target: { value: "Honda" } });
+    fireEvent.click(screen.getByRole("button", { name: /^search$/i }));
 
     await waitFor(() => {
-      expect(vehicleService.searchVehicles).toHaveBeenCalledWith({
-        make: "Honda", model: undefined, category: undefined, minPrice: undefined, maxPrice: undefined,
-      });
+      expect(vehicleService.searchVehicles).toHaveBeenCalledWith(
+        expect.objectContaining({ make: "Honda" })
+      );
       expect(screen.getByText(/Honda/i)).toBeInTheDocument();
       expect(screen.getByText(/City/i)).toBeInTheDocument();
     });
@@ -102,8 +117,9 @@ describe("Dashboard", () => {
 
     await waitFor(() => expect(screen.getByText(/Toyota/i)).toBeInTheDocument());
 
-    fireEvent.change(screen.getByPlaceholderText(/e.g. Toyota/i), { target: { value: "Honda" } });
-    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    fireEvent.click(screen.getByRole("button", { name: /filters/i }));
+    fireEvent.change(screen.getByPlaceholderText(/e\.g\. Toyota/i), { target: { value: "Honda" } });
+    fireEvent.click(screen.getByRole("button", { name: /^search$/i }));
 
     await waitFor(() => expect(screen.getByText(/Honda/i)).toBeInTheDocument());
 

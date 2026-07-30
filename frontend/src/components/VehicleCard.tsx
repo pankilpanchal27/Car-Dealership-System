@@ -66,11 +66,10 @@ export default function VehicleCard({
                 <button
                   type="button"
                   className="number-btn"
-                  onClick={() =>
-                    setRestockAmount(
-                      String(Math.max(-vehicle.quantity, Number(restockAmount || 0) - 1))
-                    )
-                  }
+                  onClick={() => {
+                    const next = Math.max(-vehicle.quantity, Number(restockAmount || 0) - 1);
+                    setRestockAmount(next === 0 ? "" : String(next));
+                  }}
                   aria-label="Decrease"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -82,15 +81,19 @@ export default function VehicleCard({
                   placeholder="Qty"
                   className="number-input"
                   value={restockAmount}
-                  onChange={(e) => setRestockAmount(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setRestockAmount(val === "0" ? "" : val);
+                  }}
                   min={-vehicle.quantity}
                 />
                 <button
                   type="button"
                   className="number-btn"
-                  onClick={() =>
-                    setRestockAmount(String(Number(restockAmount || 0) + 1))
-                  }
+                  onClick={() => {
+                    const next = Number(restockAmount || 0) + 1;
+                    setRestockAmount(next === 0 ? "" : String(next));
+                  }}
                   aria-label="Increase"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

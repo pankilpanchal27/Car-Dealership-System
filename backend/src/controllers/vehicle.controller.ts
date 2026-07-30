@@ -89,6 +89,15 @@ export const updateVehicleHandler = async (
   res: Response
 ): Promise<void> => {
   try {
+    const moderationResult = await moderateVehicleContent(req.body);
+    if (!moderationResult.isAppropriate) {
+      res.status(400).json({
+        success: false,
+        message: `Content rejected: ${moderationResult.reason}`,
+      });
+      return;
+    }
+
     const vehicle = await updateVehicle(req.params.id as string, req.body);
 
     if (!vehicle) {

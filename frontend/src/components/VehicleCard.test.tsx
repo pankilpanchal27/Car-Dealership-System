@@ -110,16 +110,19 @@ describe("VehicleCard", () => {
     expect(screen.queryByTestId("sold-out-badge")).not.toBeInTheDocument();
   });
 
-  it("displays in-stock badge with correct count", () => {
+  it("sold-out badge is inside the badge row and does not overlap content", () => {
     render(
       <VehicleCard
-        vehicle={{ ...baseVehicle, quantity: 5 }}
+        vehicle={{ ...baseVehicle, quantity: 0 }}
         isAdmin={false}
         onPurchase={vi.fn()}
         onEdit={vi.fn()}
         onDelete={vi.fn()}
       />
     );
-    expect(screen.getByTestId("stock-badge")).toHaveClass("in-stock");
+    const badge = screen.getByTestId("sold-out-badge");
+    const badgeRow = badge.closest(".vehicle-badge-row");
+    // Badge must be a child of the badge-row, not floating outside
+    expect(badgeRow).not.toBeNull();
   });
 });

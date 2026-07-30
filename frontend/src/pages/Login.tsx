@@ -74,8 +74,8 @@ export default function Login() {
         <div className="auth-card">
           {/* Brand */}
           <div className="auth-brand">
-            <div className="auth-logo-mark">C</div>
-            <div className="auth-logo-text">CarDealer</div>
+            <div className="auth-logo-mark">A</div>
+            <div className="auth-logo-text">AutoPrime</div>
           </div>
 
           <h1 className="auth-title">Welcome back</h1>

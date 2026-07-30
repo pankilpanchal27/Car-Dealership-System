@@ -283,6 +283,10 @@ a:hover {
   white-space: nowrap;
 }
 
+.btn svg {
+  flex-shrink: 0;
+}
+
 .btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -709,6 +713,10 @@ input[type="number"]::-webkit-outer-spin-button {
   .page-container,
   .page-container-narrow {
     padding: 20px 16px;
+  }
+
+  .hide-on-mobile {
+    display: none !important;
   }
 }
 

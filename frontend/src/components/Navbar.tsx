@@ -24,7 +24,7 @@ export default function Navbar({
     .toUpperCase()
     .slice(0, 2);
 
-  const title = isAdmin ? "ADMIN DASHBOARD" : "VEHICLE INVENTORY";
+  const title = isAdmin ? "AutoPrime Admin" : "AutoPrime Store";
   const subtitle = isAdmin
     ? "Manage inventory, stock & vehicle details"
     : "Browse and purchase vehicles";
@@ -34,7 +34,7 @@ export default function Navbar({
       <div className="navbar-inner">
         {/* Brand */}
         <div className="navbar-brand">
-          <div className="navbar-logo-mark">C</div>
+          <div className="navbar-logo-mark">A</div>
           <div>
             <div className="navbar-title">{title}</div>
             <div className="navbar-subtitle">{subtitle}</div>
@@ -46,7 +46,7 @@ export default function Navbar({
           {/* User pill */}
           <div className="navbar-user-pill">
             <div className="navbar-avatar">{initials}</div>
-            <span>{userName}</span>
+            <span className="hide-on-mobile">{userName}</span>
           </div>
 
           {/* Admin / View Store toggle */}
@@ -68,7 +68,7 @@ export default function Navbar({
                   <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
                 </svg>
               )}
-              <span style={{ fontSize: 12, fontWeight: 600 }}>
+              <span className="hide-on-mobile" style={{ fontSize: 12, fontWeight: 600 }}>
                 {isAdmin ? "Store" : "Admin"}
               </span>
             </button>
@@ -89,7 +89,7 @@ export default function Navbar({
               <polyline points="16 17 21 12 16 7"/>
               <line x1="21" y1="12" x2="9" y2="12"/>
             </svg>
-            Logout
+            <span className="hide-on-mobile">Logout</span>
           </button>
         </div>
       </div>

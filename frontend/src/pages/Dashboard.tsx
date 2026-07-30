@@ -14,10 +14,33 @@ import {
   type Vehicle,
 } from "../services/vehicleService";
 
+function StatCard({
+  icon,
+  label,
+  value,
+  color = "var(--text-primary)",
+  iconBg = "var(--accent-subtle)",
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: React.ReactNode;
+  color?: string;
+  iconBg?: string;
+}) {
+  return (
+    <div className="stat-card">
+      <div className="stat-icon" style={{ background: iconBg }}>
+        {icon}
+      </div>
+      <div className="stat-label">{label}</div>
+      <div className="stat-value" style={{ color }}>{value}</div>
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const { user, logout } = useAuth();
-  
-  // View mode state for admin
+
   const [viewAsCustomer, setViewAsCustomer] = useState(false);
   const isActuallyAdmin = user?.role === "admin";
   const isAdminView = isActuallyAdmin && !viewAsCustomer;
@@ -26,7 +49,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Admin Add Form State
+  // Admin add-form state
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [category, setCategory] = useState("");
@@ -34,10 +57,9 @@ export default function Dashboard() {
   const [quantity, setQuantity] = useState("");
   const [adding, setAdding] = useState(false);
 
-  // Admin Edit Modal
   const [editTarget, setEditTarget] = useState<Vehicle | null>(null);
 
-  // ─── Data fetching ─────────────────────────────────────────────────────────
+  // ─── Data fetching ──────────────────────────────────────────────────────────
   async function loadVehicles() {
     try {
       setLoading(true);
@@ -55,17 +77,16 @@ export default function Dashboard() {
     loadVehicles();
   }, []);
 
-  // ─── Stats Calculation ─────────────────────────────────────────────────────
+  // ─── Stats ──────────────────────────────────────────────────────────────────
   const stats = useMemo(() => {
     const totalModels = new Set(vehicles.map((v) => v.model)).size;
     const totalUnits = vehicles.reduce((acc, v) => acc + v.quantity, 0);
-    const totalValue = vehicles.reduce((acc, v) => acc + (v.price * v.quantity), 0);
+    const totalValue = vehicles.reduce((acc, v) => acc + v.price * v.quantity, 0);
     const outOfStock = vehicles.filter((v) => v.quantity === 0).length;
-
     return { totalModels, totalUnits, totalValue, outOfStock };
   }, [vehicles]);
 
-  // ─── Actions ───────────────────────────────────────────────────────────────
+  // ─── Actions ────────────────────────────────────────────────────────────────
   async function handleSearch(filters: {
     make?: string;
     model?: string;
@@ -73,7 +94,12 @@ export default function Dashboard() {
     minPrice?: string;
     maxPrice?: string;
   }) {
-    const hasFilters = filters.make || filters.model || filters.category || filters.minPrice || filters.maxPrice;
+    const hasFilters =
+      filters.make ||
+      filters.model ||
+      filters.category ||
+      filters.minPrice ||
+      filters.maxPrice;
     if (!hasFilters) {
       await loadVehicles();
       return;
@@ -111,7 +137,11 @@ export default function Dashboard() {
         price: Number(price),
         quantity: Number(quantity),
       });
-      setMake(""); setModel(""); setCategory(""); setPrice(""); setQuantity("");
+      setMake("");
+      setModel("");
+      setCategory("");
+      setPrice("");
+      setQuantity("");
       await loadVehicles();
     } catch {
       setError("Failed to add vehicle. Please try again.");
@@ -133,99 +163,128 @@ export default function Dashboard() {
     await loadVehicles();
   }
 
-  // ─── Admin View ────────────────────────────────────────────────────────────
+  // ─── Shared sub-components ──────────────────────────────────────────────────
+  const ErrorAlert = () =>
+    error ? (
+      <div className="alert alert-error" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0 }}>
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        {error}
+      </div>
+    ) : null;
+
+  const LoadingSpinner = () => (
+    <div className="loading-container" data-testid="loading-spinner">
+      <div className="loading-spinner" />
+      <span>Loading vehicles…</span>
+    </div>
+  );
+
+  const EmptyState = ({ message }: { message: string }) => (
+    <div className="empty-state">
+      <div className="empty-state-icon">🚗</div>
+      <div className="empty-state-title">{message}</div>
+    </div>
+  );
+
+  // ─── Admin View ─────────────────────────────────────────────────────────────
   if (isAdminView) {
     return (
-      <div className="min-h-screen bg-gray-bg text-navy font-sans flex flex-col">
-        <Navbar 
+      <div className="page-with-navbar">
+        <Navbar
           isAdmin={true}
           isActuallyAdmin={isActuallyAdmin}
-          onLogout={logout} 
+          onLogout={logout}
           onToggleView={() => setViewAsCustomer(!viewAsCustomer)}
         />
-        
-        <main className="flex-1 max-w-[1400px] mx-auto w-full px-6 py-8 flex flex-col">
-          {error && (
-            <p className="mb-4 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
-              {error}
-            </p>
-          )}
 
-          {/* Stats Row */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-gray-100 rounded flex items-center justify-center text-gray-600 text-[8px]">▣</span>
-                Total Models
-              </p>
-              <p className="text-3xl font-heading tracking-wide text-navy">{stats.totalModels}</p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-gray-100 rounded flex items-center justify-center text-gray-600 text-[8px]">⚡</span>
-                Total Units
-              </p>
-              <p className="text-3xl font-heading tracking-wide text-navy">{stats.totalUnits}</p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-gray-100 rounded flex items-center justify-center text-gray-600 text-[8px]">₹</span>
-                Total Value
-              </p>
-              <p className="text-3xl font-heading tracking-wide text-gold">
-                ₹{stats.totalValue.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-              </p>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-sm p-5 shadow-sm">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2 flex items-center gap-2">
-                <span className="w-3 h-3 bg-red-50 rounded flex items-center justify-center text-red-500 text-[8px]">⊗</span>
-                Out of Stock
-              </p>
-              <p className="text-3xl font-heading tracking-wide text-red-500">{stats.outOfStock}</p>
-            </div>
+        <div className="page-container">
+          <ErrorAlert />
+
+          {/* Stats row */}
+          <div className="stats-grid">
+            <StatCard
+              icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>}
+              label="Total Models"
+              value={stats.totalModels}
+            />
+            <StatCard
+              icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>}
+              label="Total Units"
+              value={stats.totalUnits}
+              iconBg="rgba(251, 191, 36, 0.12)"
+            />
+            <StatCard
+              icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>}
+              label="Total Value"
+              value={`₹${stats.totalValue.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`}
+              color="var(--accent)"
+              iconBg="var(--accent-subtle)"
+            />
+            <StatCard
+              icon={<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>}
+              label="Out of Stock"
+              value={stats.outOfStock}
+              color="var(--danger)"
+              iconBg="var(--danger-bg)"
+            />
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-6 items-start">
-            {/* Left Sidebar: Add Vehicle Form */}
-            <div className="w-full lg:w-72 shrink-0 bg-white border border-gray-200 rounded-sm p-6 shadow-sm sticky top-28">
-              <h2 className="text-sm font-bold uppercase tracking-widest text-gold mb-6">
+          {/* Main grid: sidebar + vehicle grid */}
+          <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
+            {/* Add Vehicle sidebar */}
+            <div className="admin-sidebar">
+              <div className="admin-sidebar-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
                 Add New Vehicle
-              </h2>
-              <form onSubmit={handleAdd} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Make</label>
-                  <input type="text" required value={make} onChange={(e) => setMake(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
+              </div>
+              <form onSubmit={handleAdd} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <div className="form-group">
+                  <label className="form-label">Make</label>
+                  <input type="text" required value={make} onChange={(e) => setMake(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Model</label>
-                  <input type="text" required value={model} onChange={(e) => setModel(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
+                <div className="form-group">
+                  <label className="form-label">Model</label>
+                  <input type="text" required value={model} onChange={(e) => setModel(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
                 </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Category</label>
-                  <input type="text" required value={category} onChange={(e) => setCategory(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
+                <div className="form-group">
+                  <label className="form-label">Category</label>
+                  <input type="text" required value={category} onChange={(e) => setCategory(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
                 </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Price (₹)</label>
-                    <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <div className="form-group">
+                    <label className="form-label">Price (₹)</label>
+                    <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
                   </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Quantity</label>
-                    <input type="number" required min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="input-minimal rounded-sm py-2 px-3 text-xs" />
+                  <div className="form-group">
+                    <label className="form-label">Qty</label>
+                    <input type="number" required min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
                   </div>
                 </div>
-                <button type="submit" disabled={adding} className="btn-gold rounded-sm py-2.5 mt-2 text-white hover:text-white">
-                  {adding ? "ADDING..." : "ADD VEHICLE"}
+                <button type="submit" disabled={adding} className="btn btn-primary btn-full" aria-label="Add Vehicle" style={{ marginTop: 4 }}>
+                  {adding ? <><span className="btn-spinner" /> Adding…</> : <>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Vehicle
+                  </>}
                 </button>
               </form>
             </div>
 
-            {/* Right side: Vehicle Grid */}
-            <div className="flex-1 w-full">
+            {/* Vehicle grid */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="section-header">
+                <span className="section-title">Inventory</span>
+                <span className="section-count">{vehicles.length} vehicle{vehicles.length !== 1 ? "s" : ""}</span>
+              </div>
               {loading ? (
-                <div className="text-gray-500 font-mono">Loading...</div>
+                <LoadingSpinner />
               ) : vehicles.length === 0 ? (
-                <div className="text-gray-500 font-mono py-10">No vehicles in inventory.</div>
+                <EmptyState message="No vehicles in inventory." />
               ) : (
                 <VehicleList
                   vehicles={vehicles}
@@ -237,9 +296,8 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-        </main>
+        </div>
 
-        {/* Edit Modal (Kept simple for admin) */}
         {editTarget && (
           <EditVehicleModal
             isOpen={!!editTarget}
@@ -252,29 +310,35 @@ export default function Dashboard() {
     );
   }
 
-  // ─── Customer View ─────────────────────────────────────────────────────────
+  // ─── Customer View ──────────────────────────────────────────────────────────
   return (
-    <div className="min-h-screen bg-gray-bg text-navy font-sans flex flex-col">
-      <Navbar 
-        isAdmin={false} 
+    <div className="page-with-navbar">
+      <Navbar
+        isAdmin={false}
         isActuallyAdmin={isActuallyAdmin}
         onLogout={logout}
         onToggleView={() => setViewAsCustomer(false)}
       />
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10 flex flex-col">
-        {error && (
-          <p className="mb-6 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
-            {error}
+      <div className="page-container-narrow">
+        <ErrorAlert />
+
+        {/* Hero section */}
+        <div style={{ marginBottom: 28, animation: "fadeInUp 0.4s ease" }}>
+          <h2 style={{ fontSize: 28, fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 6 }}>
+            Browse Our Fleet
+          </h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>
+            Discover premium vehicles — filter, search and purchase instantly.
           </p>
-        )}
+        </div>
 
         <SearchBar onSearch={handleSearch} />
 
         {loading ? (
-          <div className="text-gray-500 font-mono">Loading...</div>
+          <LoadingSpinner />
         ) : vehicles.length === 0 ? (
-          <div className="text-gray-500 font-mono py-20 text-center">No vehicles found.</div>
+          <EmptyState message="No vehicles found." />
         ) : (
           <VehicleList
             vehicles={vehicles}
@@ -284,7 +348,7 @@ export default function Dashboard() {
             onDelete={handleDelete}
           />
         )}
-      </main>
+      </div>
     </div>
   );
 }

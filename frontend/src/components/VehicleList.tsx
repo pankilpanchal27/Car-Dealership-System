@@ -24,6 +24,12 @@ export default function VehicleList({
     ? "repeat(auto-fill, minmax(260px, 1fr))"
     : "repeat(auto-fill, minmax(240px, 1fr))";
 
+  const sortedVehicles = [...vehicles].sort((a, b) => {
+    const aStock = a.quantity > 0 ? 1 : 0;
+    const bStock = b.quantity > 0 ? 1 : 0;
+    return bStock - aStock;
+  });
+
   return (
     <section
       style={{
@@ -32,7 +38,7 @@ export default function VehicleList({
         gap: 20,
       }}
     >
-      {vehicles.map((vehicle) => (
+      {sortedVehicles.map((vehicle) => (
         <VehicleCard
           key={vehicle._id}
           vehicle={vehicle}

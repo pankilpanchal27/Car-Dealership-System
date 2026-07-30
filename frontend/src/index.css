@@ -1009,12 +1009,15 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .vehicle-card-accent {
+  position: relative;
+  overflow: hidden;
   height: 6px;
   background: var(--gradient-accent);
 }
 
 .vehicle-image-container {
-  height: 200px;
+  position: relative;
+  height: 180px;
   width: 100%;
   overflow: hidden;
   background: var(--bg-surface);
@@ -1025,11 +1028,26 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.3s ease;
 }
 
 .vehicle-card:hover .vehicle-image {
   transform: scale(1.05);
+}
+
+.out-of-stock-ribbon {
+  position: absolute;
+  top: 24px;
+  right: -32px;
+  background: var(--danger);
+  color: #fff;
+  padding: 4px 40px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transform: rotate(45deg);
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .vehicle-card-body {

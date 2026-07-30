@@ -36,6 +36,16 @@ export default function EditVehicleModal({
     setError("");
   }, [vehicle]);
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,27 +70,35 @@ export default function EditVehicleModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="modal-backdrop"
+      data-testid="modal-backdrop"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="edit-vehicle-title"
-        className="w-full max-w-md rounded-sm border border-gray-200 bg-white p-8 shadow-xl"
+        className="modal-box"
       >
-        <h2
-          id="edit-vehicle-title"
-          className="mb-6 text-2xl font-heading text-navy"
+        {/* Close button */}
+        <button
+          className="modal-close"
+          onClick={onClose}
+          aria-label="Close modal"
         >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        <h2 id="edit-vehicle-title" className="modal-title">
           Edit Vehicle
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-make" className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-              Make
-            </label>
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="form-group">
+            <label htmlFor="edit-make" className="form-label">Make</label>
             <input
               id="edit-make"
               aria-label="Make"
@@ -88,14 +106,12 @@ export default function EditVehicleModal({
               required
               value={make}
               onChange={(e) => setMake(e.target.value)}
-              className="input-minimal rounded-sm px-4 py-2.5"
+              className="form-input"
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-model" className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-              Model
-            </label>
+          <div className="form-group">
+            <label htmlFor="edit-model" className="form-label">Model</label>
             <input
               id="edit-model"
               aria-label="Model"
@@ -103,14 +119,12 @@ export default function EditVehicleModal({
               required
               value={model}
               onChange={(e) => setModel(e.target.value)}
-              className="input-minimal rounded-sm px-4 py-2.5"
+              className="form-input"
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-category" className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-              Category
-            </label>
+          <div className="form-group">
+            <label htmlFor="edit-category" className="form-label">Category</label>
             <input
               id="edit-category"
               aria-label="Category"
@@ -118,60 +132,75 @@ export default function EditVehicleModal({
               required
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="input-minimal rounded-sm px-4 py-2.5"
+              className="form-input"
             />
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-price" className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-              Price (₹)
-            </label>
-            <input
-              id="edit-price"
-              aria-label="Price"
-              type="number"
-              required
-              min={0}
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              className="input-minimal rounded-sm px-4 py-2.5"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="edit-quantity" className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
-              Quantity
-            </label>
-            <input
-              id="edit-quantity"
-              aria-label="Quantity"
-              type="number"
-              required
-              min={0}
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-              className="input-minimal rounded-sm px-4 py-2.5"
-            />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="form-group">
+              <label htmlFor="edit-price" className="form-label">Price (₹)</label>
+              <input
+                id="edit-price"
+                aria-label="Price"
+                type="number"
+                required
+                min={0}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="edit-quantity" className="form-label">Quantity</label>
+              <input
+                id="edit-quantity"
+                aria-label="Quantity"
+                type="number"
+                required
+                min={0}
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="form-input"
+              />
+            </div>
           </div>
 
           {error && (
-            <p className="text-sm font-medium text-red-600 bg-red-50 p-2 rounded">{error}</p>
+            <div className="alert alert-error" role="alert">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ flexShrink: 0 }}>
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              </svg>
+              {error}
+            </div>
           )}
 
-          <div className="mt-2 flex gap-3">
+          <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 rounded-sm border border-gray-200 bg-gray-50 py-2.5 text-xs font-bold uppercase tracking-widest text-navy transition hover:bg-gray-100"
+              className="btn btn-ghost"
+              style={{ flex: 1 }}
+              aria-label="Cancel"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 rounded-sm bg-gold py-2.5 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-gold-hover disabled:opacity-50"
+              className="btn btn-primary"
+              style={{ flex: 1 }}
+              aria-label="Save changes"
             >
-              {loading ? "SAVING…" : "SAVE CHANGES"}
+              {loading ? (
+                <><span className="btn-spinner" /> Saving…</>
+              ) : (
+                <>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Save Changes
+                </>
+              )}
             </button>
           </div>
         </form>

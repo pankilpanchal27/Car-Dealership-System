@@ -3,6 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
 
 import { AuthProvider } from "../context/AuthProvider";
+import { ThemeProvider } from "../context/ThemeProvider";
 import Register from "./Register";
 import * as authService from "../services/authService";
 
@@ -23,9 +24,11 @@ describe("Register Page", () => {
 
     render(
       <MemoryRouter>
-        <AuthProvider>
-          <Register />
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Register />
+          </AuthProvider>
+        </ThemeProvider>
       </MemoryRouter>
     );
 
@@ -41,7 +44,7 @@ describe("Register Page", () => {
       target: { value: "password123" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /register/i }));
+    fireEvent.click(screen.getByRole("button", { name: /create account/i }));
 
     await waitFor(() => {
       expect(authService.register).toHaveBeenCalledWith({

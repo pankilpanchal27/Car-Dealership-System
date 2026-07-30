@@ -62,14 +62,43 @@ export default function VehicleCard({
           <div className="vehicle-actions">
             {/* Restock row */}
             <div style={{ display: "flex", gap: 8 }}>
-              <input
-                type="number"
-                placeholder="Restock amount"
-                className="form-input"
-                value={restockAmount}
-                onChange={(e) => setRestockAmount(e.target.value)}
-                style={{ padding: "8px 12px", fontSize: 13 }}
-              />
+              <div className="custom-number-input">
+                <button
+                  type="button"
+                  className="number-btn"
+                  onClick={() =>
+                    setRestockAmount(
+                      String(Math.max(1, Number(restockAmount || 1) - 1))
+                    )
+                  }
+                  aria-label="Decrease"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </button>
+                <input
+                  type="number"
+                  placeholder="Qty"
+                  className="number-input"
+                  value={restockAmount}
+                  onChange={(e) => setRestockAmount(e.target.value)}
+                  min="1"
+                />
+                <button
+                  type="button"
+                  className="number-btn"
+                  onClick={() =>
+                    setRestockAmount(String(Number(restockAmount || 0) + 1))
+                  }
+                  aria-label="Increase"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </button>
+              </div>
               <button
                 className="btn btn-ghost"
                 style={{ flexShrink: 0, padding: "8px 14px", fontSize: 12 }}

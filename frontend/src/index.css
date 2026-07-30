@@ -412,20 +412,76 @@ a:hover {
   border-color: rgba(99, 102, 241, 0.3);
 }
 
-/* Number input spinners integration */
-.form-input[type="number"] {
+/* Hide native number spinners universally for a seamless look */
+.form-input[type="number"],
+input[type="number"] {
   -moz-appearance: textfield;
 }
 .form-input[type="number"]::-webkit-inner-spin-button,
-.form-input[type="number"]::-webkit-outer-spin-button {
-  opacity: 0.3;
-  transition: opacity 0.2s;
-  cursor: pointer;
-  height: 24px;
+.form-input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-.form-input[type="number"]:hover::-webkit-inner-spin-button,
-.form-input[type="number"]:hover::-webkit-outer-spin-button {
-  opacity: 0.8;
+
+/* Custom Number Input Component (Seamless wrapper) */
+.custom-number-input {
+  display: flex;
+  align-items: stretch;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  flex: 1;
+}
+
+.custom-number-input:focus-within {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+  background: var(--bg-surface);
+}
+
+.custom-number-input:hover:not(:focus-within) {
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
+.number-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.number-btn:hover {
+  color: var(--text-primary);
+  background: rgba(128, 128, 128, 0.1);
+}
+
+.number-input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  outline: none;
+  padding: 8px 0;
+}
+
+.number-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
 /* ═══════════════════════════════════════════════════════════

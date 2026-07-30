@@ -138,6 +138,11 @@ export default function Dashboard() {
     await loadVehicles();
   }
 
+  async function handleQuickUpdate(id: string, data: Partial<Vehicle>) {
+    await updateVehicle(id, data);
+    await loadVehicles();
+  }
+
   async function handleDelete(id: string) {
     if (!window.confirm("Delete this vehicle? This cannot be undone.")) return;
     await deleteVehicle(id);
@@ -255,6 +260,7 @@ export default function Dashboard() {
                     isAdmin={true}
                     onPurchase={handlePurchase}
                     onEdit={(v) => setEditTarget(v)}
+                    onQuickUpdate={handleQuickUpdate}
                     onDelete={handleDelete}
                   />
                 )}
@@ -315,9 +321,10 @@ export default function Dashboard() {
         ) : (
           <VehicleList
             vehicles={vehicles}
-            isAdmin={false}
+            isAdmin={isAdminView}
             onPurchase={handlePurchase}
-            onEdit={(v) => setEditTarget(v)}
+            onEdit={setEditTarget}
+            onQuickUpdate={handleQuickUpdate}
             onDelete={handleDelete}
           />
         )}

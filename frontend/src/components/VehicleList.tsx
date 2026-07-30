@@ -6,6 +6,7 @@ interface VehicleListProps {
   isAdmin: boolean;
   onPurchase: (id: string) => void;
   onEdit: (vehicle: Vehicle) => void;
+  onQuickUpdate?: (id: string, data: Partial<Vehicle>) => Promise<void>;
   onDelete: (id: string) => void;
 }
 
@@ -18,6 +19,7 @@ export default function VehicleList({
   isAdmin,
   onPurchase,
   onEdit,
+  onQuickUpdate,
   onDelete,
 }: VehicleListProps) {
   const cols = isAdmin
@@ -45,6 +47,7 @@ export default function VehicleList({
           isAdmin={isAdmin}
           onPurchase={onPurchase}
           onEdit={onEdit}
+          onQuickUpdate={onQuickUpdate}
           onDelete={onDelete}
         />
       ))}

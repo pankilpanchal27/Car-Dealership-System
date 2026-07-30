@@ -6,6 +6,7 @@ interface VehicleCardProps {
   isAdmin: boolean;
   onPurchase: (id: string) => void;
   onEdit: (vehicle: Vehicle) => void;
+  onQuickUpdate?: (id: string, data: Partial<Vehicle>) => Promise<void>;
   onDelete: (id: string) => void;
 }
 
@@ -14,6 +15,7 @@ export default function VehicleCard({
   isAdmin,
   onPurchase,
   onEdit,
+  onQuickUpdate,
   onDelete,
 }: VehicleCardProps) {
   const inStock = vehicle.quantity > 0;
@@ -118,10 +120,9 @@ export default function VehicleCard({
               <button
                 className="btn btn-ghost"
                 style={{ flexShrink: 0, padding: "8px 14px", fontSize: 12 }}
-                onClick={() => {
-                  if (restockAmount) {
-                    onEdit({
-                      ...vehicle,
+                onClick={async () => {
+                  if (restockAmount && onQuickUpdate) {
+                    await onQuickUpdate(vehicle._id, {
                       quantity: vehicle.quantity + Number(restockAmount),
                     });
                     setRestockAmount("");

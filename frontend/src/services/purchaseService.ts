@@ -1,5 +1,5 @@
 import api from "../api/api";
-import { Vehicle } from "./vehicleService";
+import type { Vehicle } from "./vehicleService";
 
 export interface Purchase {
   _id: string;

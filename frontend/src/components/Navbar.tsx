@@ -1,5 +1,4 @@
 import { useAuth } from "../context/useAuth";
-import { useTheme } from "../context/useTheme";
 import ThemeToggle from "./ThemeToggle";
 
 interface NavbarProps {
@@ -16,7 +15,7 @@ export default function Navbar({
   onLogout,
 }: NavbarProps) {
   const { user } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+
   const userName = user?.name || user?.role || "User";
   const initials = userName
     .split(" ")

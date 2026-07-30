@@ -3,12 +3,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { register as registerService } from "../services/authService";
 import { useAuth } from "../context/useAuth";
 import ThemeToggle from "../components/ThemeToggle";
-import { useTheme } from "../context/useTheme";
+
 
 export default function Register() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

@@ -811,10 +811,18 @@ input[type="number"]::-webkit-outer-spin-button {
   line-height: 1.1;
 }
 
+[data-theme="light"] .auth-hero-title {
+  color: var(--text-primary);
+}
+
 .auth-hero-desc {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.7;
+}
+
+[data-theme="light"] .auth-hero-desc {
+  color: var(--text-secondary);
 }
 
 /* Auth form header */

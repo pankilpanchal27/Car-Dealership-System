@@ -20,8 +20,18 @@ export default function VehicleList({
   onEdit,
   onDelete,
 }: VehicleListProps) {
+  const cols = isAdmin
+    ? "repeat(auto-fill, minmax(260px, 1fr))"
+    : "repeat(auto-fill, minmax(240px, 1fr))";
+
   return (
-    <section className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${isAdmin ? 'lg:grid-cols-2 xl:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4'}`}>
+    <section
+      style={{
+        display: "grid",
+        gridTemplateColumns: cols,
+        gap: 20,
+      }}
+    >
       {vehicles.map((vehicle) => (
         <VehicleCard
           key={vehicle._id}

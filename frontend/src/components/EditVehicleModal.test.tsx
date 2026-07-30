@@ -104,14 +104,27 @@ describe("EditVehicleModal", () => {
         onSave={onSave}
       />
     );
-    fireEvent.change(screen.getByDisplayValue("Toyota"), {
-      target: { value: "Honda" },
+
+    fireEvent.change(screen.getByLabelText(/price/i), {
+      target: { value: "5000000" },
     });
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    
+    // Test the new imageUrl field
+    fireEvent.change(screen.getByLabelText(/image url/i), {
+      target: { value: "https://example.com/image.jpg" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: /save changes/i }));
+
     await waitFor(() => {
-      expect(onSave).toHaveBeenCalledWith(
-        expect.objectContaining({ make: "Honda" })
-      );
+      expect(onSave).toHaveBeenCalledWith({
+        make: "Toyota",
+        model: "Fortuner",
+        category: "SUV",
+        price: 5000000,
+        quantity: 5,
+        imageUrl: "https://example.com/image.jpg",
+      });
     });
   });
 

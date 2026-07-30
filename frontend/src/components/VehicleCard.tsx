@@ -25,7 +25,17 @@ export default function VehicleCard({
 
   const CardHeader = () => (
     <>
-      <div className="vehicle-card-accent" />
+      {vehicle.imageUrl ? (
+        <div className="vehicle-image-container">
+          <img
+            src={vehicle.imageUrl}
+            alt={vehicle.model}
+            className="vehicle-image"
+          />
+        </div>
+      ) : (
+        <div className="vehicle-card-accent" />
+      )}
       <div className="vehicle-card-body">
         <div className="vehicle-badge-row">
           <span className="vehicle-badge">{vehicle.category}</span>

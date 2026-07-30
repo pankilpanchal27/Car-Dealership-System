@@ -125,4 +125,23 @@ describe("VehicleCard", () => {
     // Badge must be a child of the badge-row, not floating outside
     expect(badgeRow).not.toBeNull();
   });
+  it("renders the vehicle image if imageUrl is provided", () => {
+    const vehicleWithImage = {
+      ...baseVehicle,
+      imageUrl: "https://example.com/car.jpg",
+    };
+    render(
+      <VehicleCard
+        vehicle={vehicleWithImage}
+        isAdmin={false}
+        onPurchase={vi.fn()}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+
+    const img = screen.getByRole("img", { name: baseVehicle.model });
+    expect(img).toBeInTheDocument();
+    expect(img).toHaveAttribute("src", "https://example.com/car.jpg");
+  });
 });

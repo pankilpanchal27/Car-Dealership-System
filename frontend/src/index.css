@@ -505,8 +505,55 @@ input[type="number"]::-webkit-outer-spin-button {
   box-shadow: var(--shadow-hover), var(--glow-accent);
 }
 
+.theme-toggle:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+/* Theme Switch Component */
+.theme-switch {
+  appearance: none;
+  border: none;
+  outline: none;
+  width: 44px;
+  height: 24px;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  transition: background 0.3s, border-color 0.3s;
+  flex-shrink: 0;
+}
+
+.theme-switch:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+  border-color: var(--accent);
+}
+
+.theme-switch-thumb {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-primary);
+}
+
+.theme-switch-dark .theme-switch-thumb {
+  transform: translateX(20px);
+}
+
 /* ═══════════════════════════════════════════════════════════
-   NAVBAR
+   7. NAVBAR
 ═══════════════════════════════════════════════════════════ */
 .navbar {
   position: fixed;
@@ -957,9 +1004,27 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .vehicle-card-accent {
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), #818cf8);
+  height: 6px;
+  background: var(--gradient-accent);
+}
+
+.vehicle-image-container {
+  height: 200px;
   width: 100%;
+  overflow: hidden;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.vehicle-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.vehicle-card:hover .vehicle-image {
+  transform: scale(1.05);
 }
 
 .vehicle-card-body {
@@ -1338,4 +1403,82 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 13px;
   color: var(--text-muted);
   font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   13. PURCHASE HISTORY
+═══════════════════════════════════════════════════════════ */
+.purchases-table-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  animation: fadeInUp 0.4s ease;
+}
+
+.purchases-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.purchases-table th {
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.purchases-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.purchases-table tr:last-child td {
+  border-bottom: none;
+}
+
+.purchases-table tr:hover td {
+  background: var(--bg-card-hover);
+}
+
+.purchase-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.purchase-user-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.purchase-user-email {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.purchase-vehicle-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.purchase-vehicle-category {
+  font-size: 12px;
+  display: inline-block;
+  padding: 2px 6px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  margin-top: 4px;
 }

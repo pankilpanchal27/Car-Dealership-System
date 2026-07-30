@@ -62,7 +62,7 @@ describe("Navbar", () => {
   it("renders the theme toggle button", () => {
     render(<Navbar isAdmin={false} onLogout={vi.fn()} />);
     expect(
-      screen.getByRole("button", { name: /toggle theme/i })
+      screen.getByRole("switch", { name: /switch to/i })
     ).toBeInTheDocument();
   });
 
@@ -70,20 +70,20 @@ describe("Navbar", () => {
     const toggleTheme = vi.fn();
     vi.mocked(useTheme).mockReturnValue({ theme: "dark", toggleTheme });
     render(<Navbar isAdmin={false} onLogout={vi.fn()} />);
-    fireEvent.click(screen.getByRole("button", { name: /toggle theme/i }));
+    fireEvent.click(screen.getByRole("switch", { name: /switch to/i }));
     expect(toggleTheme).toHaveBeenCalledTimes(1);
   });
 
-  it("displays the sun icon in dark mode", () => {
+  it("displays the moon icon in dark mode", () => {
     vi.mocked(useTheme).mockReturnValue({ theme: "dark", toggleTheme: vi.fn() });
     render(<Navbar isAdmin={false} onLogout={vi.fn()} />);
-    expect(screen.getByTestId("icon-sun")).toBeInTheDocument();
+    expect(screen.getByTestId("icon-moon")).toBeInTheDocument();
   });
 
-  it("displays the moon icon in light mode", () => {
+  it("displays the sun icon in light mode", () => {
     vi.mocked(useTheme).mockReturnValue({ theme: "light", toggleTheme: vi.fn() });
     render(<Navbar isAdmin={false} onLogout={vi.fn()} />);
-    expect(screen.getByTestId("icon-moon")).toBeInTheDocument();
+    expect(screen.getByTestId("icon-sun")).toBeInTheDocument();
   });
 
   it("shows user name in avatar pill", () => {

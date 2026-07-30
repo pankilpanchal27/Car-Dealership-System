@@ -9,6 +9,7 @@ import * as authService from "../services/authService";
 vi.mock("../services/authService");
 
 describe("Login Page", () => {
+
   it("logs in the user and navigates to dashboard", async () => {
     vi.mocked(authService.login).mockResolvedValue({
       success: true,

@@ -6,6 +6,7 @@ export interface IVehicle {
   category: string;
   price: number;
   quantity: number;
+  imageUrl?: string;
 }
 
 const vehicleSchema = new Schema<IVehicle>(
@@ -33,6 +34,10 @@ const vehicleSchema = new Schema<IVehicle>(
       type: Number,
       required: true,
       min: 0,
+    },
+    imageUrl: {
+      type: String,
+      required: false,
     },
   },
   {

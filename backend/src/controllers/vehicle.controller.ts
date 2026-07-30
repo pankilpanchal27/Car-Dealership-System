@@ -133,9 +133,15 @@ export const purchaseVehicleHandler = async (
   res: Response
 ): Promise<void> => {
   try {
+    const userId = (req as any).user?.id;
+    if (!userId) {
+       res.status(401).json({ success: false, message: "Unauthorized" });
+       return;
+    }
     const vehicle = await purchaseVehicle(
       req.params.id as string,
-      req.body.quantity
+      req.body.quantity,
+      userId
     );
 
     if (!vehicle) {

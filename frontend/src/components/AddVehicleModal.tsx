@@ -1,42 +1,38 @@
 import { useState, useEffect } from "react";
 import type { Vehicle } from "../services/vehicleService";
 
-interface EditVehicleModalProps {
+interface AddVehicleModalProps {
   isOpen: boolean;
-  vehicle: Vehicle;
   onClose: () => void;
-  onSave: (data: Partial<Vehicle>) => Promise<void>;
+  onSave: (data: Omit<Vehicle, "_id" | "createdAt" | "updatedAt">) => Promise<void>;
 }
 
-/**
- * EditVehicleModal — admin-only modal that pre-fills with current vehicle data
- * and calls onSave with the updated fields on submission.
- */
-export default function EditVehicleModal({
+export default function AddVehicleModal({
   isOpen,
-  vehicle,
   onClose,
   onSave,
-}: EditVehicleModalProps) {
-  const [make, setMake] = useState(vehicle.make);
-  const [model, setModel] = useState(vehicle.model);
-  const [category, setCategory] = useState(vehicle.category);
-  const [price, setPrice] = useState(String(vehicle.price));
-  const [quantity, setQuantity] = useState(String(vehicle.quantity));
-  const [imageUrl, setImageUrl] = useState(vehicle.imageUrl || "");
+}: AddVehicleModalProps) {
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Re-populate fields whenever the selected vehicle changes
+  // Reset fields when opened
   useEffect(() => {
-    setMake(vehicle.make);
-    setModel(vehicle.model);
-    setCategory(vehicle.category);
-    setPrice(String(vehicle.price));
-    setQuantity(String(vehicle.quantity));
-    setImageUrl(vehicle.imageUrl || "");
-    setError("");
-  }, [vehicle]);
+    if (isOpen) {
+      setMake("");
+      setModel("");
+      setCategory("");
+      setPrice("");
+      setQuantity("");
+      setImageUrl("");
+      setError("");
+    }
+  }, [isOpen]);
 
   // Close on Escape key
   useEffect(() => {
@@ -65,7 +61,7 @@ export default function EditVehicleModal({
       });
       onClose();
     } catch {
-      setError("Failed to save changes. Please try again.");
+      setError("Failed to add vehicle. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -80,10 +76,9 @@ export default function EditVehicleModal({
       <div
         role="dialog"
         aria-modal="true"
-        aria-labelledby="edit-vehicle-title"
+        aria-labelledby="add-vehicle-title"
         className="modal-box"
       >
-        {/* Close button */}
         <button
           className="modal-close"
           onClick={onClose}
@@ -95,92 +90,92 @@ export default function EditVehicleModal({
           </svg>
         </button>
 
-        <h2 id="edit-vehicle-title" className="modal-title">
-          Edit Vehicle
+        <h2 id="add-vehicle-title" className="modal-title">
+          Add New Vehicle
         </h2>
 
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div className="form-group">
-            <label htmlFor="edit-make" className="form-label">Make</label>
+            <label htmlFor="add-make" className="form-label">Make</label>
             <input
-              id="edit-make"
-              aria-label="Make"
+              id="add-make"
               type="text"
               required
               value={make}
               onChange={(e) => setMake(e.target.value)}
               className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="edit-model" className="form-label">Model</label>
-            <input
-              id="edit-model"
-              aria-label="Model"
-              type="text"
-              required
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
-              className="form-input"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="edit-category" className="form-label">Category</label>
-            <input
-              id="edit-category"
-              aria-label="Category"
-              type="text"
-              required
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="form-input"
+              placeholder="e.g. Toyota"
             />
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <div className="form-group">
-              <label htmlFor="edit-price" className="form-label">Price (₹)</label>
+              <label htmlFor="add-model" className="form-label">Model</label>
               <input
-                id="edit-price"
-                aria-label="Price"
+                id="add-model"
+                type="text"
+                required
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+                className="form-input"
+                placeholder="e.g. Camry"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="add-category" className="form-label">Category</label>
+              <input
+                id="add-category"
+                type="text"
+                required
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="form-input"
+                placeholder="e.g. Sedan"
+              />
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <div className="form-group">
+              <label htmlFor="add-price" className="form-label">Price (₹)</label>
+              <input
+                id="add-price"
                 type="number"
                 required
                 min={0}
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 className="form-input"
+                placeholder="e.g. 3000000"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="edit-quantity" className="form-label">Quantity</label>
+              <label htmlFor="add-quantity" className="form-label">Quantity</label>
               <input
-                id="edit-quantity"
-                aria-label="Quantity"
+                id="add-quantity"
                 type="number"
                 required
                 min={0}
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 className="form-input"
+                placeholder="e.g. 10"
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="edit-imageUrl" className="form-label">
+            <label htmlFor="add-imageUrl" className="form-label">
               Image URL (Optional)
             </label>
             <input
-              id="edit-imageUrl"
-              aria-label="Image URL"
+              id="add-imageUrl"
               type="url"
               className="form-input"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
+              placeholder="https://example.com/car.jpg"
             />
           </div>
 
@@ -196,30 +191,18 @@ export default function EditVehicleModal({
           <div className="modal-actions" style={{ display: "flex", gap: 10, marginTop: 8 }}>
             <button
               type="button"
+              className="btn btn-secondary"
               onClick={onClose}
-              className="btn btn-ghost"
-              style={{ flex: 1 }}
-              aria-label="Cancel"
+              disabled={loading}
             >
               Cancel
             </button>
             <button
               type="submit"
-              disabled={loading}
               className="btn btn-primary"
-              style={{ flex: 1 }}
-              aria-label="Save changes"
+              disabled={loading}
             >
-              {loading ? (
-                <><span className="btn-spinner" /> Saving…</>
-              ) : (
-                <>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Save Changes
-                </>
-              )}
+              {loading ? "Adding..." : "Add Vehicle"}
             </button>
           </div>
         </form>

@@ -1,4 +1,5 @@
 import Vehicle, { IVehicle } from "../models/Vehicle";
+import Purchase from "../models/Purchase";
 
 export const createVehicle = async (vehicleData: IVehicle) => {
   const vehicle = await Vehicle.create(vehicleData);
@@ -49,7 +50,8 @@ export const deleteVehicle = async (id: string) => {
 
 export const purchaseVehicle = async (
   id: string,
-  quantity: number
+  quantity: number,
+  userId: string
 ) => {
   const vehicle = await Vehicle.findById(id);
 
@@ -63,6 +65,13 @@ export const purchaseVehicle = async (
 
   vehicle.quantity -= quantity;
   await vehicle.save();
+
+  await Purchase.create({
+    user: userId,
+    vehicle: vehicle._id,
+    quantity,
+    totalPrice: vehicle.price * quantity,
+  });
 
   return vehicle;
 };

@@ -3,14 +3,19 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import { authenticate } from "./middleware/auth.middleware";
 import vehicleRoutes from "./routes/vehicle.routes";
+import purchaseRoutes from "./routes/purchase.routes";
+import connectDB from "./config/database";
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
+app.use("/api/purchases", purchaseRoutes);
 
 // Home Route
 app.get("/", (req, res) => {

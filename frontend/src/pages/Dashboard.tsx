@@ -3,6 +3,8 @@ import SearchBar from "../components/SearchBar";
 import VehicleList from "../components/VehicleList";
 import Navbar from "../components/Navbar";
 import EditVehicleModal from "../components/EditVehicleModal";
+import AddVehicleModal from "../components/AddVehicleModal";
+import PurchaseHistory from "../components/PurchaseHistory";
 import { useAuth } from "../context/useAuth";
 import {
   getVehicles,
@@ -49,14 +51,8 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Admin add-form state
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [adding, setAdding] = useState(false);
-
+  const [adminTab, setAdminTab] = useState<"inventory" | "purchases">("inventory");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<Vehicle | null>(null);
 
   // ─── Data fetching ──────────────────────────────────────────────────────────
@@ -126,27 +122,12 @@ export default function Dashboard() {
     }
   }
 
-  async function handleAdd(e: React.FormEvent) {
-    e.preventDefault();
-    setAdding(true);
+  async function handleAdd(data: Omit<Vehicle, "_id" | "createdAt" | "updatedAt">) {
     try {
-      await createVehicle({
-        make,
-        model,
-        category,
-        price: Number(price),
-        quantity: Number(quantity),
-      });
-      setMake("");
-      setModel("");
-      setCategory("");
-      setPrice("");
-      setQuantity("");
+      await createVehicle(data);
       await loadVehicles();
     } catch {
-      setError("Failed to add vehicle. Please try again.");
-    } finally {
-      setAdding(false);
+      throw new Error("Failed to add vehicle");
     }
   }
 
@@ -233,68 +214,54 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Main grid: sidebar + vehicle grid */}
-          <div style={{ display: "flex", gap: 24, alignItems: "flex-start", flexWrap: "wrap" }}>
-            {/* Add Vehicle sidebar */}
-            <div className="admin-sidebar">
-              <div className="admin-sidebar-title">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
-                </svg>
-                Add New Vehicle
-              </div>
-              <form onSubmit={handleAdd} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                <div className="form-group">
-                  <label className="form-label">Make</label>
-                  <input type="text" required value={make} onChange={(e) => setMake(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Model</label>
-                  <input type="text" required value={model} onChange={(e) => setModel(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Category</label>
-                  <input type="text" required value={category} onChange={(e) => setCategory(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                  <div className="form-group">
-                    <label className="form-label">Price (₹)</label>
-                    <input type="number" required min={0} value={price} onChange={(e) => setPrice(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Qty</label>
-                    <input type="number" required min={0} value={quantity} onChange={(e) => setQuantity(e.target.value)} className="form-input" style={{ padding: "9px 12px", fontSize: 13 }} />
-                  </div>
-                </div>
-                <button type="submit" disabled={adding} className="btn btn-primary btn-full" aria-label="Add Vehicle" style={{ marginTop: 4 }}>
-                  {adding ? <><span className="btn-spinner" /> Adding…</> : <>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Add Vehicle
-                  </>}
-                </button>
-              </form>
-            </div>
+          {/* Tabs */}
+          <div className="admin-tabs" style={{ display: "flex", gap: 16, marginBottom: 24, borderBottom: "1px solid var(--border)", paddingBottom: 16 }}>
+            <button
+              className={`btn ${adminTab === "inventory" ? "btn-primary" : "btn-secondary"}`}
+              onClick={() => setAdminTab("inventory")}
+            >
+              Inventory
+            </button>
+            <button
+              className={`btn ${adminTab === "purchases" ? "btn-primary" : "btn-secondary"}`}
+              onClick={() => setAdminTab("purchases")}
+            >
+              Purchase History
+            </button>
+          </div>
 
-            {/* Vehicle grid */}
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div className="section-header">
-                <span className="section-title">Inventory</span>
-                <span className="section-count">{vehicles.length} vehicle{vehicles.length !== 1 ? "s" : ""}</span>
-              </div>
-              {loading ? (
-                <LoadingSpinner />
-              ) : vehicles.length === 0 ? (
-                <EmptyState message="No vehicles in inventory." />
-              ) : (
-                <VehicleList
-                  vehicles={vehicles}
-                  isAdmin={true}
-                  onPurchase={handlePurchase}
-                  onEdit={(v) => setEditTarget(v)}
-                  onDelete={handleDelete}
-                />
-              )}
-            </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {adminTab === "inventory" ? (
+              <>
+                <div className="section-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <div>
+                    <span className="section-title">Inventory</span>
+                    <span className="section-count">{vehicles.length} vehicle{vehicles.length !== 1 ? "s" : ""}</span>
+                  </div>
+                  <button className="btn btn-primary" onClick={() => setIsAddModalOpen(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: 6 }}>
+                      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add Vehicle
+                  </button>
+                </div>
+                {loading ? (
+                  <LoadingSpinner />
+                ) : vehicles.length === 0 ? (
+                  <EmptyState message="No vehicles in inventory." />
+                ) : (
+                  <VehicleList
+                    vehicles={vehicles}
+                    isAdmin={true}
+                    onPurchase={handlePurchase}
+                    onEdit={(v) => setEditTarget(v)}
+                    onDelete={handleDelete}
+                  />
+                )}
+              </>
+            ) : (
+              <PurchaseHistory />
+            )}
           </div>
         </div>
 
@@ -306,6 +273,12 @@ export default function Dashboard() {
             onSave={handleSaveEdit}
           />
         )}
+
+        <AddVehicleModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSave={handleAdd}
+        />
       </div>
     );
   }

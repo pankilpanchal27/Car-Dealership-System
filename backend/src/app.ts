@@ -4,7 +4,7 @@ import authRoutes from "./routes/auth.routes";
 import { authenticate } from "./middleware/auth.middleware";
 import vehicleRoutes from "./routes/vehicle.routes";
 import purchaseRoutes from "./routes/purchase.routes";
-import connectDB from "./config/database";
+import connectDB from "./config/db";
 
 const app = express();
 

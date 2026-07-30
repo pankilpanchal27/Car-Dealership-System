@@ -68,7 +68,7 @@ export default function VehicleCard({
                   className="number-btn"
                   onClick={() =>
                     setRestockAmount(
-                      String(Math.max(1, Number(restockAmount || 1) - 1))
+                      String(Math.max(-vehicle.quantity, Number(restockAmount || 0) - 1))
                     )
                   }
                   aria-label="Decrease"
@@ -83,7 +83,7 @@ export default function VehicleCard({
                   className="number-input"
                   value={restockAmount}
                   onChange={(e) => setRestockAmount(e.target.value)}
-                  min="1"
+                  min={-vehicle.quantity}
                 />
                 <button
                   type="button"

@@ -1023,7 +1023,6 @@ input[type="number"]::-webkit-outer-spin-button {
   height: 180px;
   width: 100%;
   overflow: hidden;
-  background: #ffffff;
   border-bottom: 1px solid var(--border);
 }
 
@@ -1446,13 +1445,15 @@ input[type="number"]::-webkit-outer-spin-button {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   box-shadow: var(--shadow-sm);
   animation: fadeInUp 0.4s ease;
 }
 
 .purchases-table {
   width: 100%;
+  min-width: 600px;
   border-collapse: collapse;
   text-align: left;
 }

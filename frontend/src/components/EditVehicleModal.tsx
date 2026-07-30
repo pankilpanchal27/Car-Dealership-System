@@ -24,6 +24,7 @@ export default function EditVehicleModal({
   const [price, setPrice] = useState(String(vehicle.price));
   const [quantity, setQuantity] = useState(String(vehicle.quantity));
   const [imageUrl, setImageUrl] = useState(vehicle.imageUrl || "");
+  const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -35,6 +36,7 @@ export default function EditVehicleModal({
     setPrice(String(vehicle.price));
     setQuantity(String(vehicle.quantity));
     setImageUrl(vehicle.imageUrl || "");
+    setImageError(false);
     setError("");
   }, [vehicle]);
 
@@ -179,9 +181,22 @@ export default function EditVehicleModal({
               type="url"
               className="form-input"
               value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
+              onChange={(e) => { setImageUrl(e.target.value); setImageError(false); }}
               placeholder="https://example.com/image.jpg"
             />
+            {imageUrl.trim() && (
+              <div className="image-preview-box">
+                {imageError ? (
+                  <span className="image-preview-box-error">Invalid Image URL</span>
+                ) : (
+                  <img 
+                    src={imageUrl.trim()} 
+                    alt="Vehicle preview" 
+                    onError={() => setImageError(true)} 
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           {error && (

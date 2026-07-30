@@ -18,6 +18,7 @@ export default function AddVehicleModal({
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,6 +31,7 @@ export default function AddVehicleModal({
       setPrice("");
       setQuantity("");
       setImageUrl("");
+      setImageError(false);
       setError("");
     }
   }, [isOpen]);
@@ -174,9 +176,22 @@ export default function AddVehicleModal({
               type="url"
               className="form-input"
               value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
+              onChange={(e) => { setImageUrl(e.target.value); setImageError(false); }}
               placeholder="https://example.com/car.jpg"
             />
+            {imageUrl.trim() && (
+              <div className="image-preview-box">
+                {imageError ? (
+                  <span className="image-preview-box-error">Invalid Image URL</span>
+                ) : (
+                  <img 
+                    src={imageUrl.trim()} 
+                    alt="Vehicle preview" 
+                    onError={() => setImageError(true)} 
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           {error && (

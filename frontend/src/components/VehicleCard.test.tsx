@@ -22,7 +22,6 @@ describe("VehicleCard", () => {
         onDelete={vi.fn()}
       />
     );
-
     expect(screen.getByText(/Toyota/i)).toBeInTheDocument();
     expect(screen.getByText(/Fortuner/i)).toBeInTheDocument();
     expect(screen.getByText(/SUV/i)).toBeInTheDocument();
@@ -38,7 +37,6 @@ describe("VehicleCard", () => {
         onDelete={vi.fn()}
       />
     );
-
     const btn = screen.getByRole("button", { name: /purchase/i });
     expect(btn).toBeInTheDocument();
     expect(btn).not.toBeDisabled();
@@ -54,7 +52,6 @@ describe("VehicleCard", () => {
         onDelete={vi.fn()}
       />
     );
-
     const btn = screen.getByRole("button", { name: /purchase/i });
     expect(btn).toBeDisabled();
   });
@@ -69,7 +66,6 @@ describe("VehicleCard", () => {
         onDelete={vi.fn()}
       />
     );
-
     expect(screen.getByRole("button", { name: /edit/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
   });
@@ -84,8 +80,46 @@ describe("VehicleCard", () => {
         onDelete={vi.fn()}
       />
     );
-
     expect(screen.queryByRole("button", { name: /edit/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /delete/i })).not.toBeInTheDocument();
+  });
+
+  it("shows sold-out badge when quantity is 0", () => {
+    render(
+      <VehicleCard
+        vehicle={{ ...baseVehicle, quantity: 0 }}
+        isAdmin={false}
+        onPurchase={vi.fn()}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.getByTestId("sold-out-badge")).toBeInTheDocument();
+  });
+
+  it("does not show sold-out badge when quantity > 0", () => {
+    render(
+      <VehicleCard
+        vehicle={{ ...baseVehicle, quantity: 3 }}
+        isAdmin={false}
+        onPurchase={vi.fn()}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.queryByTestId("sold-out-badge")).not.toBeInTheDocument();
+  });
+
+  it("displays in-stock badge with correct count", () => {
+    render(
+      <VehicleCard
+        vehicle={{ ...baseVehicle, quantity: 5 }}
+        isAdmin={false}
+        onPurchase={vi.fn()}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.getByTestId("stock-badge")).toHaveClass("in-stock");
   });
 });

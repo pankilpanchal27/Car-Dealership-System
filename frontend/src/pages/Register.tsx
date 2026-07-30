@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { register as registerService } from "../services/authService";
 import { useAuth } from "../context/useAuth";
+import { useTheme } from "../context/useTheme";
 
 export default function Register() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -29,25 +31,61 @@ export default function Register() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      {/* Left side: Form (Light) */}
-      <div className="flex w-full flex-col justify-center bg-gray-bg px-8 lg:w-1/2 lg:px-24 relative">
-        <div className="w-full max-w-md mx-auto relative z-10 my-10">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.08)] p-10 flex flex-col items-center"
-          >
-            <h1 className="text-3xl font-heading text-navy mb-1 mt-2">
-              Create Account
-            </h1>
-            <p className="text-sm font-medium text-gray-500 mb-8 text-center">
-              Join us to browse and manage the premium inventory.
-            </p>
+    <div className="auth-layout">
+      {/* Left: Hero panel (desktop only) */}
+      <div className="auth-hero">
+        <img
+          src="/assets/showroom_showcase.png"
+          alt="Premium luxury cars in a modern showroom"
+          className="auth-hero-img"
+        />
+        <div className="auth-hero-overlay" />
+        <div className="auth-hero-content">
+          <h1 className="auth-hero-title">Join The Fleet</h1>
+          <p className="auth-hero-desc">
+            Create your account to get exclusive access to our premium vehicle inventory and special dealership offers.
+          </p>
+        </div>
+      </div>
 
-            <div className="w-full mb-5 flex flex-col gap-1.5">
-              <label htmlFor="name" className="text-xs font-bold uppercase tracking-widest text-navy">
-                Full Name
-              </label>
+      {/* Right: Form panel */}
+      <div className="auth-panel">
+        {/* Theme toggle top-right */}
+        <div style={{ position: "absolute", top: 20, right: 24 }}>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <svg data-testid="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+            ) : (
+              <svg data-testid="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            )}
+          </button>
+        </div>
+
+        <div className="auth-card">
+          {/* Brand */}
+          <div className="auth-brand">
+            <div className="auth-logo-mark">C</div>
+            <div className="auth-logo-text">CarDealer</div>
+          </div>
+
+          <h1 className="auth-title">Create account</h1>
+          <p className="auth-subtitle">Join us to browse and manage the premium inventory</p>
+
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">Full Name</label>
               <input
                 id="name"
                 type="text"
@@ -55,14 +93,12 @@ export default function Register() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="John Doe"
-                className="input-minimal"
+                className="form-input"
               />
             </div>
 
-            <div className="w-full mb-5 flex flex-col gap-1.5">
-              <label htmlFor="email" className="text-xs font-bold uppercase tracking-widest text-navy">
-                Email address
-              </label>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Email address</label>
               <input
                 id="email"
                 type="email"
@@ -70,14 +106,12 @@ export default function Register() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="input-minimal"
+                className="form-input"
               />
             </div>
 
-            <div className="w-full mb-6 flex flex-col gap-1.5">
-              <label htmlFor="password" className="text-xs font-bold uppercase tracking-widest text-navy">
-                Password
-              </label>
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">Password</label>
               <input
                 id="password"
                 type="password"
@@ -85,45 +119,33 @@ export default function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="input-minimal"
+                className="form-input"
               />
             </div>
 
             {error && (
-              <p className="w-full mb-5 rounded bg-red-50 px-4 py-3 text-sm font-medium text-red-600 border border-red-200">
+              <div className="alert alert-error" role="alert">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
                 {error}
-              </p>
+              </div>
             )}
 
-            <button type="submit" disabled={loading} className="btn-gold w-full mb-6">
-              {loading ? "CREATING ACCOUNT…" : "REGISTER"}
+            <button type="submit" disabled={loading} className="btn btn-primary btn-full" style={{ padding: "13px 24px", fontSize: 15 }}>
+              {loading ? (
+                <><span className="btn-spinner" /> Creating account…</>
+              ) : (
+                "Create Account"
+              )}
             </button>
-
-            <p className="text-center text-sm font-medium text-gray-500">
-              Already have an account?{" "}
-              <Link to="/login" className="text-gold transition hover:text-gold-hover">
-                Sign in
-              </Link>
-            </p>
           </form>
-        </div>
-      </div>
 
-      {/* Right side: Photo visual (hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 relative flex-col items-center justify-end bg-navy overflow-hidden">
-        <img 
-          src="/assets/showroom_showcase.png" 
-          alt="Premium luxury car in modern showroom" 
-          className="absolute inset-0 w-full h-full object-cover opacity-70"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
-        
-        <div className="relative z-10 text-center mb-24 max-w-lg px-8 text-white">
-          <h1 className="text-5xl font-heading mb-4 tracking-wider">
-            JOIN THE FLEET
-          </h1>
-          <p className="text-gray-300 text-lg font-medium leading-relaxed">
-            Create your account to get exclusive access to our premium vehicle inventory and special dealership offers.
+          <p style={{ textAlign: "center", fontSize: 14, color: "var(--text-secondary)", marginTop: 24 }}>
+            Already have an account?{" "}
+            <Link to="/login" style={{ color: "var(--text-accent)", fontWeight: 600 }}>
+              Sign in
+            </Link>
           </p>
         </div>
       </div>

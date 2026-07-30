@@ -26,20 +26,24 @@ export default function VehicleCard({
   const CardHeader = () => (
     <>
       <div className="vehicle-card-accent" />
-      {!inStock && (
-        <span className="sold-out-badge" data-testid="sold-out-badge">
-          Sold Out
-        </span>
-      )}
       <div className="vehicle-card-body">
         <div className="vehicle-badge-row">
           <span className="vehicle-badge">{vehicle.category}</span>
-          <span
-            data-testid="stock-badge"
-            className={`vehicle-stock-badge ${inStock ? "in-stock" : "out-of-stock"}`}
-          >
-            {vehicle.quantity} in stock
-          </span>
+          {inStock ? (
+            <span
+              data-testid="stock-badge"
+              className="vehicle-stock-badge in-stock"
+            >
+              {vehicle.quantity} in stock
+            </span>
+          ) : (
+            <span
+              data-testid="sold-out-badge"
+              className="vehicle-stock-badge out-of-stock sold-out-pill"
+            >
+              Sold Out
+            </span>
+          )}
         </div>
         <h2 className="vehicle-name">
           {vehicle.make} {vehicle.model}
@@ -48,6 +52,7 @@ export default function VehicleCard({
       </div>
     </>
   );
+
 
   if (isAdmin) {
     return (
